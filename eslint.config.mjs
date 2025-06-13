@@ -12,26 +12,24 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 
-  // Add rules overrides here
   {
     rules: {
       "@typescript-eslint/no-unused-vars": [
-        "warn",  // changed to warn to avoid build failure
+        "warn",
         {
-          argsIgnorePattern: "^_", // ignore unused args starting with _
-          varsIgnorePattern: "^_", // ignore unused vars starting with _
-          caughtErrorsIgnorePattern: "^_", // ignore unused catch params starting with _
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
         },
       ],
-       // disable explicit any error temporarily
-       '@typescript-eslint/no-empty-object-type': 'off',
-       // prefer const warnings instead of errors
-       "@typescript-eslint/no-explicit-any": ["warn"],
+      "@typescript-eslint/no-empty-object-type": "off",
+      "@typescript-eslint/no-explicit-any": "warn",
     },
-    ignores: [
-      "lib/generated/**",
-      "node_modules/**",
-      "dist/**"]
+  },
+
+  // 🔽 This must be a separate object
+  {
+    ignores: ["lib/generated/**", "node_modules/**", "dist/**"],
   },
 ];
 
