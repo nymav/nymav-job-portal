@@ -12,20 +12,20 @@ type JobWithExtras = Job & {
   savedUsers?: string[];
 };
 
+// ✅ Await searchParams (it's a Promise in Next.js 15)
 const SearchPage = async ({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     title?: string;
     categoryId?: string;
     createdAtFilter?: string;
     shiftTiming?: string;
     workMode?: string;
     yearsOfExperience?: string;
-  };
+  }>;
 }) => {
-  // directly use searchParams
-  const resolvedParams = searchParams;
+  const resolvedParams = await searchParams;
 
   const categories = await db.category.findMany({
     orderBy: { name: "asc" },
