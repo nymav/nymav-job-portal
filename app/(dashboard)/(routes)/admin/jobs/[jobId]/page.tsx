@@ -30,7 +30,7 @@ interface JobPageProps {
 }
 
 const JobDetailsPage = async ({ params }: JobPageProps) => {
-  const { jobId } = await params;
+  const { jobId } = params;
 
   const validObjectIdRegex = /^[0-9a-fA-F]{24}$/;
   if (!validObjectIdRegex.test(jobId)) {
