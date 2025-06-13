@@ -57,7 +57,7 @@ export const TagsForm = ({ initialData, jobId }: TagsFormProps) => {
       const promptText = `Generate a list of 10 relevant keywords related to the job profession "${prompt}". Return as JSON array.`;
       const data = await getGenerativeAIResponse(promptText);
 
-      let cleaned = data.replace(/^json\s*/, "").replace(/```/g, "").trim();
+      const cleaned = data.replace(/^json\s*/, "").replace(/```/g, "").trim();
       const parsed = JSON.parse(cleaned);
 
       if (Array.isArray(parsed)) {
