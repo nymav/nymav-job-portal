@@ -4,14 +4,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "type-check": "tsc --noEmit",
-    "prisma:generate": "npx prisma generate",
-    "seed": "tsx scripts/seeds.ts"
-  },
+  "dev": "next dev --turbopack",
+  "build": "next build",
+  "start": "next start",
+  "lint": "next lint",
+  "type-check": "tsc --noEmit",
+  "prisma:generate": "npx prisma generate",
+  "seed": "tsx scripts/seeds.ts",
+  "postinstall": "prisma generate"
+},
   "dependencies": {
     "@clerk/clerk-react": "^5.31.9",
     "@clerk/nextjs": "^6.21.0",
