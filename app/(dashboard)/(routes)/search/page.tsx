@@ -1,3 +1,5 @@
+
+'use client'; // Ensure it's a client component
 import { GetJobs } from "@/actions/get-jobs";
 import { SearchContainer } from "@/components/search-container";
 import { db } from "@/lib/db";
@@ -12,34 +14,20 @@ type JobWithExtras = Job & {
   savedUsers?: string[];
 };
 
-type TypedSearchParams = {
-  title?: string;
-  categoryId?: string;
-  createdAtFilter?: string;
-  shiftTiming?: string;
-  workMode?: string;
-  yearsOfExperience?: string;
-};
-
-const normalizeParam = (param: string | string[] | undefined): string | undefined => {
-  if (Array.isArray(param)) return param[0];
-  return param;
-};
-
+// ✅ Await searchParams (it's a Promise in Next.js 15)
 const SearchPage = async ({
   searchParams,
 }: {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: Promise<{
+    title?: string;
+    categoryId?: string;
+    createdAtFilter?: string;
+    shiftTiming?: string;
+    workMode?: string;
+    yearsOfExperience?: string;
+  }>;
 }) => {
-  // Normalize each param to a string or undefined
-  const typedParams: TypedSearchParams = {
-    title: normalizeParam(searchParams.title),
-    categoryId: normalizeParam(searchParams.categoryId),
-    createdAtFilter: normalizeParam(searchParams.createdAtFilter),
-    shiftTiming: normalizeParam(searchParams.shiftTiming),
-    workMode: normalizeParam(searchParams.workMode),
-    yearsOfExperience: normalizeParam(searchParams.yearsOfExperience),
-  };
+  const resolvedParams = await searchParams;
 
   const categories = await db.category.findMany({
     orderBy: { name: "asc" },
@@ -47,7 +35,7 @@ const SearchPage = async ({
 
   const { userId } = await auth();
 
-  const jobs = (await GetJobs(typedParams)) as JobWithExtras[];
+  const jobs = (await GetJobs(resolvedParams)) as JobWithExtras[];
 
   return (
     <div className="w-full min-h-screen py-6 px-4 sm:px-6 text-white bg-transparent font-sans">
