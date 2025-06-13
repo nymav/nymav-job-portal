@@ -27,13 +27,13 @@ interface Params extends ParsedUrlQuery {
   jobId: string;
 }
 
-interface PageProps {
+interface JobPageProps {
   params: {
     jobId: string;
   };
 }
 
-export default async function JobDetailsPage({ params }: PageProps) {
+export default async function JobDetailsPage({ params }: JobPageProps) {
   const jobId = params.jobId;
 
   const validObjectIdRegex = /^[0-9a-fA-F]{24}$/;
