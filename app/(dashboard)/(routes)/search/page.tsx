@@ -1,5 +1,3 @@
-// app/search/page.tsx
-
 import { GetJobs } from "@/actions/get-jobs";
 import { SearchContainer } from "@/components/search-container";
 import { db } from "@/lib/db";
@@ -8,34 +6,34 @@ import { CategoriesList } from "./_components/categories-list";
 import { JobCardItem } from "./_components/job-card-item";
 import type { Job, Company, Category } from "@/lib/generated/prisma";
 
-interface SearchProps {
-  searchParams: {
-    title?: string;
-    categoryId?: string;
-    createdAtFilter?: string;
-    shiftTiming?: string;
-    workMode?: string;
-    yearsOfExperience?: string;
-  };
-}
-
 type JobWithExtras = Job & {
   company: Company | null;
   category?: Category | null;
   savedUsers?: string[];
 };
 
-const SearchPage = async ({ searchParams }: SearchProps) => {
-  // Fetch categories (for filters or category list)
+// ✅ Await searchParams (it's a Promise in Next.js 15)
+const SearchPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    title?: string;
+    categoryId?: string;
+    createdAtFilter?: string;
+    shiftTiming?: string;
+    workMode?: string;
+    yearsOfExperience?: string;
+  }>;
+}) => {
+  const resolvedParams = await searchParams;
+
   const categories = await db.category.findMany({
     orderBy: { name: "asc" },
   });
 
-  // Get current userId for saved job UI logic
   const { userId } = await auth();
 
-  // Fetch filtered jobs from your GetJobs action
-  const jobs = (await GetJobs(searchParams)) as JobWithExtras[];
+  const jobs = (await GetJobs(resolvedParams)) as JobWithExtras[];
 
   return (
     <div className="w-full min-h-screen py-6 px-4 sm:px-6 text-white bg-transparent font-sans">
