@@ -12,31 +12,28 @@ type JobWithExtras = Job & {
   savedUsers?: string[];
 };
 
-type SearchParams = {
-  title?: string;
-  categoryId?: string;
-  createdAtFilter?: string;
-  shiftTiming?: string;
-  workMode?: string;
-  yearsOfExperience?: string;
-};
-
 const SearchPage = async ({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: {
+    title?: string;
+    categoryId?: string;
+    createdAtFilter?: string;
+    shiftTiming?: string;
+    workMode?: string;
+    yearsOfExperience?: string;
+  };
 }) => {
-  // Auth user server side
-  const { userId } = await auth();
+  // directly use searchParams
+  const resolvedParams = searchParams;
 
-  // Fetch categories server side
   const categories = await db.category.findMany({
     orderBy: { name: "asc" },
   });
 
-  // Fetch jobs using your GetJobs function
-  // Pass searchParams directly (already resolved, not a Promise)
-  const jobs = (await GetJobs(searchParams)) as JobWithExtras[];
+  const { userId } = await auth();
+
+  const jobs = (await GetJobs(resolvedParams)) as JobWithExtras[];
 
   return (
     <div className="w-full min-h-screen py-6 px-4 sm:px-6 text-white bg-transparent font-sans">
