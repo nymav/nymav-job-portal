@@ -26,6 +26,10 @@ const eslintConfig = [
       "@typescript-eslint/no-explicit-any": "off", // disable explicit any error temporarily
        '@typescript-eslint/no-empty-object-type': 'off',// prefer const warnings instead of errors
     },
+    ignores: [
+      "lib/generated/**",
+      "node_modules/**",
+      "dist/**"]
   },
 ];
 
