@@ -1,4 +1,3 @@
-
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import {
@@ -23,18 +22,14 @@ import { JobDescription } from "./_components/job-description";
 import { TagsForm } from "./_components/tags-form";
 import { CompanyForm } from "./_components/company-form";
 import type { Job } from "@/lib/generated/prisma";
-import type { ParsedUrlQuery } from "querystring";
-interface Params extends ParsedUrlQuery {
-  jobId: string;
-}
 
 interface JobPageProps {
-  params: Promise<{
+  params: {
     jobId: string;
-  }>;
+  };
 }
 
-async function JobDetailsPage({ params }: { params: Promise<{ jobId: string; }> }) {
+const JobDetailsPage = async ({ params }: JobPageProps) => {
   const { jobId } = await params;
 
   const validObjectIdRegex = /^[0-9a-fA-F]{24}$/;
@@ -149,4 +144,6 @@ async function JobDetailsPage({ params }: { params: Promise<{ jobId: string; }> 
       </div>
     </div>
   );
-}
+};
+
+export default JobDetailsPage;
