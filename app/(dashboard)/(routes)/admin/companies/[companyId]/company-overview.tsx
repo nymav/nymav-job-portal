@@ -76,7 +76,7 @@ export const CompanyOverviewForm = ({
       form.setValue("overview", cleaned);
       form.trigger("overview");
     } catch (error) {
-      console.error(error);
+      //console.error(error);
       toast.error("Failed to generate description");
     } finally {
       setIsPrompting(false);
