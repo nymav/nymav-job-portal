@@ -1,11 +1,12 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { NextResponse, NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function PATCH(req: NextRequest, context: { params: { companyId: string } }) {
+export async function PATCH(req: NextRequest) {
   try {
     const { userId } = await auth();
-    const { companyId } = context.params;
+    const url = req.nextUrl;
+    const companyId = url.pathname.split("/").pop(); // or use regex
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
