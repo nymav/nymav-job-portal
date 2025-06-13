@@ -31,7 +31,7 @@ const SavedJobsPage = async () => {
         <h1 className="text-3xl font-bold mb-6 text-purple-300">Saved Jobs</h1>
 
         {savedJobs.length === 0 ? (
-          <p className="text-purple-200">You haven't saved any jobs yet.</p>
+          <p className="text-purple-200">You have&apos;t saved any jobs yet.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 auto-rows-fr">
             {savedJobs.map((job) => (

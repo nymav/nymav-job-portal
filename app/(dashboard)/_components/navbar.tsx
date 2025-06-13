@@ -25,7 +25,7 @@ export const Navbar = () => {
       {/* Center: Funny display name */}
       <div className="absolute inset-x-0 flex justify-center pointer-events-none">
         <span className="text-purple-300 text-sm font-semibold tracking-wide">
-          made by Uncle Sam's Nephew
+          made by Uncle Sam&apos;s Nephew
         </span>
       </div>
     </motion.nav>
