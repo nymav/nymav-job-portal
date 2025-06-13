@@ -1,4 +1,3 @@
-
 import { GetJobs } from "@/actions/get-jobs";
 import { SearchContainer } from "@/components/search-container";
 import { db } from "@/lib/db";
@@ -13,28 +12,31 @@ type JobWithExtras = Job & {
   savedUsers?: string[];
 };
 
-// ✅ Await searchParams (it's a Promise in Next.js 15)
+type SearchParams = {
+  title?: string;
+  categoryId?: string;
+  createdAtFilter?: string;
+  shiftTiming?: string;
+  workMode?: string;
+  yearsOfExperience?: string;
+};
+
 const SearchPage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{
-    title?: string;
-    categoryId?: string;
-    createdAtFilter?: string;
-    shiftTiming?: string;
-    workMode?: string;
-    yearsOfExperience?: string;
-  }>;
+  searchParams: SearchParams;
 }) => {
-  const resolvedParams = await searchParams;
+  // Auth user server side
+  const { userId } = await auth();
 
+  // Fetch categories server side
   const categories = await db.category.findMany({
     orderBy: { name: "asc" },
   });
 
-  const { userId } = await auth();
-
-  const jobs = (await GetJobs(resolvedParams)) as JobWithExtras[];
+  // Fetch jobs using your GetJobs function
+  // Pass searchParams directly (already resolved, not a Promise)
+  const jobs = (await GetJobs(searchParams)) as JobWithExtras[];
 
   return (
     <div className="w-full min-h-screen py-6 px-4 sm:px-6 text-white bg-transparent font-sans">
