@@ -1,5 +1,3 @@
-
-
 import { IconBadge } from "@/components/icon-badge";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
@@ -11,15 +9,14 @@ import { CompanyDescriptionForm } from "./description-form";
 import { CompanySocialContactsForm } from "./social-contacts-form";
 import { CompanyOverviewForm } from "./company-overview";
 import { WhyJoinUsForm } from "./why-join-us-form";
-import type { Metadata } from "next"; // if you want to export metadata
-import type { FC } from "react";
+import type { Metadata } from "next";
 
-interface PageProps {
-  params: {
-    companyId: string;
-  };
-}
-const CompanyEditPage = async ({ params }: { params: any }) => {  const { userId } = await auth();
+export default async function CompanyEditPage({
+  params,
+}: {
+  params: { companyId: string };
+}) {
+  const { userId } = await auth();
   if (!userId) return redirect("/");
 
   const isCreateMode = params.companyId === "create";
@@ -134,6 +131,4 @@ const CompanyEditPage = async ({ params }: { params: any }) => {  const { userId
       </div>
     </div>
   );
-};
-
-export default CompanyEditPage;
+}

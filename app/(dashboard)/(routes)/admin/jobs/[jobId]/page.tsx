@@ -21,7 +21,6 @@ import { YearsOfExperienceForm } from "./_components/work-experience-form";
 import { JobDescription } from "./_components/job-description";
 import { TagsForm } from "./_components/tags-form";
 import { CompanyForm } from "./_components/company-form";
-
 import type { Job } from "@/lib/generated/prisma";
 
 export default async function JobDetailsPage({
