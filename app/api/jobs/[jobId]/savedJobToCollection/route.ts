@@ -1,16 +1,12 @@
-// app/api/jobs/[jobId]/savedJobToCollection/route.ts
-
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export const PATCH = async (
-  req: Request,
-  { params }: { params: { jobId: string } }
-) => {
+export const PATCH = async (req: NextRequest) => {
   try {
     const { userId } = await auth();
-    const jobId = params.jobId;
+
+    const jobId = req.nextUrl.pathname.split("/").at(-2); // Extract jobId from URL path
 
     if (!userId || !jobId) {
       return new NextResponse("Unauthorized or Missing Job ID", { status: 401 });
