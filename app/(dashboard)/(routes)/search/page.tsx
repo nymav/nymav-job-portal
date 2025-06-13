@@ -1,7 +1,4 @@
-
-'use client'; // Ensure it's a client component
 import { GetJobs } from "@/actions/get-jobs";
-import { SearchContainer } from "@/components/search-container";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { CategoriesList } from "./_components/categories-list";
@@ -14,34 +11,31 @@ type JobWithExtras = Job & {
   savedUsers?: string[];
 };
 
-// ✅ Await searchParams (it's a Promise in Next.js 15)
 const SearchPage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{
+  searchParams: {
     title?: string;
     categoryId?: string;
     createdAtFilter?: string;
     shiftTiming?: string;
     workMode?: string;
     yearsOfExperience?: string;
-  }>;
+  };
 }) => {
-  const resolvedParams = await searchParams;
-
   const categories = await db.category.findMany({
     orderBy: { name: "asc" },
   });
 
   const { userId } = await auth();
 
-  const jobs = (await GetJobs(resolvedParams)) as JobWithExtras[];
+  const jobs = (await GetJobs(searchParams)) as JobWithExtras[];
 
   return (
     <div className="w-full min-h-screen py-6 px-4 sm:px-6 text-white bg-transparent font-sans">
       {/* Mobile search bar */}
       <div className="block md:hidden mb-6">
-        <SearchContainer />
+        {/* You can put a client search input component here if needed */}
       </div>
 
       {/* Categories filter/list */}
