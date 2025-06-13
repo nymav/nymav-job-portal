@@ -19,8 +19,7 @@ interface PageProps {
     companyId: string;
   };
 }
-const CompanyEditPage = async ({ params }: PageProps) => {
-  const { userId } = await auth();
+const CompanyEditPage = async ({ params }: { params: any }) => {  const { userId } = await auth();
   if (!userId) return redirect("/");
 
   const isCreateMode = params.companyId === "create";
