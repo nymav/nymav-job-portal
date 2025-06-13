@@ -9,7 +9,6 @@
   "start": "next start",
   "lint": "next lint",
   "type-check": "tsc --noEmit",
-  "prisma:generate": "npx prisma generate",
   "seed": "tsx scripts/seeds.ts",
   "postinstall": "prisma generate"
 },
