@@ -15,13 +15,13 @@ import type { Metadata } from "next"; // if you want to export metadata
 import type { FC } from "react";
 
 // Fix type for the function argument
-interface PageProps {
+interface CompanyPageProps {
   params: {
     companyId: string;
   };
 }
 
-const CompanyEditPage = async ({ params }: PageProps) => {
+const CompanyEditPage = async ({ params }: CompanyPageProps) => {
   const { userId } = await auth();
   if (!userId) return redirect("/");
 
