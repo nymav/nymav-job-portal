@@ -34,7 +34,7 @@ interface JobPageProps {
   }>;
 }
 
-export default async function JobDetailsPage({ params }: JobPageProps) {
+async function JobDetailsPage({ params }: { params: Promise<{ jobId: string; }> }) {
   const { jobId } = await params;
 
   const validObjectIdRegex = /^[0-9a-fA-F]{24}$/;
