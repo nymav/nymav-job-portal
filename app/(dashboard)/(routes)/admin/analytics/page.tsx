@@ -1,5 +1,6 @@
 const DashBoardAnalyticsPage = () => {
-    return ( <div>"Stillllllllll Worrrrkinggggg"</div>);
-}
- 
-export default DashBoardAnalyticsPage;
+    return <div>{"Stillllllllll Worrrrkinggggg"}</div>;
+  };
+  
+  export default DashBoardAnalyticsPage;
+  
