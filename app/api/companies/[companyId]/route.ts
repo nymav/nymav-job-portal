@@ -1,15 +1,11 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-// ✅ Corrected parameter structure for route handlers in Next.js 15
-export async function PATCH(
-  req: Request,
-  { params }: { params: { companyId: string } }
-) {
+export async function PATCH(req: NextRequest, context: { params: { companyId: string } }) {
   try {
     const { userId } = await auth();
-    const { companyId } = params;
+    const { companyId } = context.params;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
