@@ -1,5 +1,3 @@
-
-
 import { IconBadge } from "@/components/icon-badge";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
@@ -11,23 +9,21 @@ import { CompanyDescriptionForm } from "./description-form";
 import { CompanySocialContactsForm } from "./social-contacts-form";
 import { CompanyOverviewForm } from "./company-overview";
 import { WhyJoinUsForm } from "./why-join-us-form";
-import type { Metadata } from "next"; // if you want to export metadata
-import type { FC } from "react";
 
-// Fix type for the function argument
+// ✅ Fix: params is a Promise in Next.js 15
 interface CompanyPageProps {
-  params: {
-    companyId: string;
-  };
+  params: Promise<{ companyId: string }>;
 }
 
 const CompanyEditPage = async ({ params }: CompanyPageProps) => {
+  const { companyId } = await params; // ✅ Await the params
   const { userId } = await auth();
   if (!userId) return redirect("/");
 
-  const isCreateMode = params.companyId === "create";
+  const isCreateMode = companyId === "create";
 
-  if (!isCreateMode && !/^[0-9a-fA-F]{24}$/.test(params.companyId)) {
+  // Validate Mongo-style ObjectId (or adjust pattern as needed)
+  if (!isCreateMode && !/^[0-9a-fA-F]{24}$/.test(companyId)) {
     return redirect("/admin/companies");
   }
 
@@ -36,7 +32,7 @@ const CompanyEditPage = async ({ params }: CompanyPageProps) => {
   if (!isCreateMode) {
     company = await db.company.findFirst({
       where: {
-        id: params.companyId,
+        id: companyId,
         userId,
       },
     });
