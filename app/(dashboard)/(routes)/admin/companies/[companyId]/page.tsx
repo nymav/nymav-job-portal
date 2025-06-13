@@ -11,12 +11,15 @@ import { CompanyDescriptionForm } from "./description-form";
 import { CompanySocialContactsForm } from "./social-contacts-form";
 import { CompanyOverviewForm } from "./company-overview";
 import { WhyJoinUsForm } from "./why-join-us-form";
+import type { Metadata } from "next"; // if you want to export metadata
+import type { FC } from "react";
 
-const CompanyEditPage = async ({
-  params,
-}: {
-  params: { companyId: string };
-}) => {
+interface PageProps {
+  params: {
+    companyId: string;
+  };
+}
+const CompanyEditPage = async ({ params }: PageProps) => {
   const { userId } = await auth();
   if (!userId) return redirect("/");
 
