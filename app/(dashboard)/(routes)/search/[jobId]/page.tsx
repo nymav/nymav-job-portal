@@ -2,13 +2,30 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { JobDetailsPageContent } from "./_components/job-details-page-content";
-import type { Job, Company, Category, AppliedJob, Resumes, UserProfile } from "@/lib/generated/prisma";
+import type {
+  Job,
+  Company,
+  Category,
+  AppliedJob,
+  Resumes,
+  UserProfile,
+} from "@/lib/generated/prisma";
 
-const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
+// ✅ Fix: Await params since it's a Promise in Next.js 15
+const JobDetailsPage = async ({
+  params,
+}: {
+  params: Promise<{ jobId: string }>;
+}) => {
+  const { jobId } = await params;
+
   const { userId } = await auth();
 
-  const job: (Job & { company: Company | null; category: Category | null }) | null = await db.job.findUnique({
-    where: { id: params.jobId },
+  const job: (Job & {
+    company: Company | null;
+    category: Category | null;
+  }) | null = await db.job.findUnique({
+    where: { id: jobId },
     include: {
       company: true,
       category: true,
