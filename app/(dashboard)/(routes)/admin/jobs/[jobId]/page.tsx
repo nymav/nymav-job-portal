@@ -22,11 +22,15 @@ import { JobDescription } from "./_components/job-description";
 import { TagsForm } from "./_components/tags-form";
 import { CompanyForm } from "./_components/company-form";
 import type { Job } from "@/lib/generated/prisma";
+import type { ParsedUrlQuery } from "querystring";
+interface Params extends ParsedUrlQuery {
+  jobId: string;
+}
 
 export default async function JobDetailsPage({
   params,
 }: {
-  params: { jobId: string };
+  params: Params;
 }) {
   const jobId = params.jobId;
 
