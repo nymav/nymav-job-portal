@@ -28,13 +28,13 @@ interface Params extends ParsedUrlQuery {
 }
 
 interface JobPageProps {
-  params: {
+  params: Promise<{
     jobId: string;
-  };
+  }>;
 }
 
 export default async function JobDetailsPage({ params }: JobPageProps) {
-  const jobId = params.jobId;
+  const { jobId } = await params;
 
   const validObjectIdRegex = /^[0-9a-fA-F]{24}$/;
   if (!validObjectIdRegex.test(jobId)) {
@@ -92,7 +92,7 @@ export default async function JobDetailsPage({ params }: JobPageProps) {
 
       {!job.isPublished && (
         <Banner
-          variant={"warning"}
+          variant="warning"
           label="This job is not published yet. You can publish it once all required fields are completed."
         />
       )}
@@ -105,7 +105,6 @@ export default async function JobDetailsPage({ params }: JobPageProps) {
           </div>
 
           <TitleForm initialData={job} jobId={job.id} />
-
           <CategoryForm
             initialData={{ categoryId: job.categoryId || undefined }}
             jobId={job.id}
@@ -114,7 +113,6 @@ export default async function JobDetailsPage({ params }: JobPageProps) {
               value: category.id,
             }))}
           />
-
           <ShortDescription initialData={job} jobId={job.id} />
           <ShiftTimingForm initialData={job} jobId={job.id} />
           <HourlyRateForm initialData={job} jobId={job.id} />
@@ -137,7 +135,6 @@ export default async function JobDetailsPage({ params }: JobPageProps) {
               <IconBadge icon={Building2} />
               <h2 className="text-xl text-neutral-700">Company Details</h2>
             </div>
-
             <CompanyForm
               initialData={job}
               jobId={job.id}
