@@ -1,13 +1,14 @@
-// app/api/users/[userId]/appliedJobs/route.ts
-
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export const PATCH = async (req: Request, { params }: { params: { userId: string } }) => {
+export const PATCH = async (req: NextRequest) => {
   try {
     const { userId: currentUserId } = await auth();
-    const { userId } = params;
+
+    // Extract the userId from the URL
+    const segments = req.nextUrl.pathname.split("/");
+    const userId = segments[segments.indexOf("users") + 1]; // Gets [userId] from /users/[userId]/appliedJobs
 
     if (!currentUserId || currentUserId !== userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -38,7 +39,7 @@ export const PATCH = async (req: Request, { params }: { params: { userId: string
       });
     }
 
-    // Update profile contact if changed
+    // Update user contact email
     await db.userProfile.update({
       where: { userId },
       data: {
@@ -46,7 +47,7 @@ export const PATCH = async (req: Request, { params }: { params: { userId: string
       },
     });
 
-    // Return updated profile WITH resumes and appliedJobs
+    // Return updated profile with resumes and applied jobs
     const updatedProfile = await db.userProfile.findUnique({
       where: { userId },
       include: {
