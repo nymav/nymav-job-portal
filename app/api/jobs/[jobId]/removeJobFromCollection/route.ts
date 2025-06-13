@@ -1,16 +1,13 @@
-// app/api/jobs/[jobId]/removeJobFromCollection/route.ts
-
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export const PATCH = async (
-  req: Request,
-  { params }: { params: { jobId: string } }
-) => {
+export const PATCH = async (req: NextRequest) => {
   try {
     const { userId } = await auth();
-    const jobId = params.jobId;
+
+    // Extract jobId from the pathname: /api/jobs/[jobId]/removeJobFromCollection
+    const jobId = req.nextUrl.pathname.split("/").slice(-2, -1)[0];
 
     if (!userId || !jobId) {
       return new NextResponse("Unauthorized or Missing Job ID", { status: 401 });
