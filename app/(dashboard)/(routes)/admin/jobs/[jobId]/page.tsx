@@ -27,14 +27,15 @@ interface Params extends ParsedUrlQuery {
   jobId: string;
 }
 
-export default async function JobDetailsPage({
-  params,
-}: {
-  params: Params;
-}) {
+interface PageProps {
+  params: {
+    jobId: string;
+  };
+}
+
+export default async function JobDetailsPage({ params }: PageProps) {
   const jobId = params.jobId;
 
-  // Validate MongoDB ObjectId format
   const validObjectIdRegex = /^[0-9a-fA-F]{24}$/;
   if (!validObjectIdRegex.test(jobId)) {
     return redirect("/admin/jobs");
@@ -52,17 +53,11 @@ export default async function JobDetailsPage({
 
   if (!job) return redirect("/admin/jobs");
 
-  const categories = await db.category.findMany({
-    orderBy: { name: "asc" },
-  });
+  const categories = await db.category.findMany({ orderBy: { name: "asc" } });
 
   const companies = await db.company.findMany({
-    where: {
-      userId,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
+    where: { userId },
+    orderBy: { createdAt: "desc" },
   });
 
   const requiredFields = [job.title, job.description, job.categoryId];

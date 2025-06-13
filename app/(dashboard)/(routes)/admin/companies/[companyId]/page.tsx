@@ -14,12 +14,15 @@ import { WhyJoinUsForm } from "./why-join-us-form";
 import type { Metadata } from "next"; // if you want to export metadata
 import type { FC } from "react";
 
+// Fix type for the function argument
 interface PageProps {
   params: {
     companyId: string;
   };
 }
-const CompanyEditPage = async ({ params }: { params: { companyId: string } }) => {  const { userId } = await auth();
+
+const CompanyEditPage = async ({ params }: PageProps) => {
+  const { userId } = await auth();
   if (!userId) return redirect("/");
 
   const isCreateMode = params.companyId === "create";
@@ -96,7 +99,6 @@ const CompanyEditPage = async ({ params }: { params: { companyId: string } }) =>
             </h2>
           </div>
 
-          {/* Show only in edit mode */}
           {!isCreateMode && company && (
             <CompanyName
               initialData={{ name: company.name }}
@@ -111,6 +113,7 @@ const CompanyEditPage = async ({ params }: { params: { companyId: string } }) =>
             />
           )}
         </div>
+
         <div className="space-y-6">
           <div>
             <div className="flex items-center gap-x-2">
@@ -123,6 +126,7 @@ const CompanyEditPage = async ({ params }: { params: { companyId: string } }) =>
             )}
           </div>
         </div>
+
         <div className="col-span-2">
           {company && (
             <CompanyOverviewForm initialData={company} companyId={company.id} />
