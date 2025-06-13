@@ -24,13 +24,11 @@ import { CompanyForm } from "./_components/company-form";
 import type { Job } from "@/lib/generated/prisma";
 
 interface JobPageProps {
-  params: {
-    jobId: string;
-  };
+  params: Promise<{ jobId: string }>;
 }
 
 const JobDetailsPage = async ({ params }: JobPageProps) => {
-  const { jobId } = params;
+  const { jobId } = await params;
 
   const validObjectIdRegex = /^[0-9a-fA-F]{24}$/;
   if (!validObjectIdRegex.test(jobId)) {
