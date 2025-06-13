@@ -1,5 +1,4 @@
 
-'use client'; // Ensure it's a client component
 import { GetJobs } from "@/actions/get-jobs";
 import { SearchContainer } from "@/components/search-container";
 import { db } from "@/lib/db";
