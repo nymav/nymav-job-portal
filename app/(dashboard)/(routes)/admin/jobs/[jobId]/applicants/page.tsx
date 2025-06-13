@@ -18,7 +18,7 @@ interface PageProps {
   params: { jobId: string };
 }
 
-const JobApplicantsPage = async ({ params }: PageProps) => {
+const JobApplicantsPage = async ({ params }: any) => {
   const { userId } = await auth();
 
   if (!userId) redirect("/sign-in");
