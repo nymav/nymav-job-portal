@@ -109,14 +109,13 @@ export default async function JobDetailsPage({
           <TitleForm initialData={job} jobId={job.id} />
 
           <CategoryForm
-  initialData={{ categoryId: job.categoryId || undefined }}
-  jobId={job.id}
-  options={categories.map((category) => ({
-    label: category.name,
-    value: category.id,
-  }))}
-/>
-
+            initialData={{ categoryId: job.categoryId || undefined }}
+            jobId={job.id}
+            options={categories.map((category) => ({
+              label: category.name,
+              value: category.id,
+            }))}
+          />
 
           <ShortDescription initialData={job} jobId={job.id} />
           <ShiftTimingForm initialData={job} jobId={job.id} />
