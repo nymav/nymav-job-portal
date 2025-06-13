@@ -5,6 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 import { CategoriesList } from "./_components/categories-list";
 import { JobCardItem } from "./_components/job-card-item";
 import type { Job, Company, Category } from "@/lib/generated/prisma";
+import { Suspense } from "react";
 
 type JobWithExtras = Job & {
   company: Company | null;
@@ -39,8 +40,10 @@ const SearchPage = async ({
     <div className="w-full min-h-screen py-6 px-4 sm:px-6 text-white bg-transparent font-sans">
       {/* Mobile search bar */}
       <div className="block md:hidden mb-6">
-        <SearchContainer />
-      </div>
+  <Suspense fallback={null}>
+    <SearchContainer />
+  </Suspense>
+</div>
 
       {/* Categories filter/list */}
       <CategoriesList categories={categories} />
