@@ -23,8 +23,10 @@ const eslintConfig = [
           caughtErrorsIgnorePattern: "^_", // ignore unused catch params starting with _
         },
       ],
-      "@typescript-eslint/no-explicit-any": "off", // disable explicit any error temporarily
-       '@typescript-eslint/no-empty-object-type': 'off',// prefer const warnings instead of errors
+       // disable explicit any error temporarily
+       '@typescript-eslint/no-empty-object-type': 'off',
+       // prefer const warnings instead of errors
+       "@typescript-eslint/no-explicit-any": ["warn"],
     },
     ignores: [
       "lib/generated/**",
