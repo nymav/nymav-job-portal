@@ -1,7 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Company } from "@/lib/generated/prisma";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,24 +50,26 @@ export const WhyJoinUsForm = ({ initialData, companyId }: WhyJoinUsFormProps) =>
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/companies/${companyId}`, values);
-      toast.success("Description updated successfully");
+      toast.success("Why Join Us section updated successfully");
       toggleEditing();
       router.refresh();
     } catch {
-      toast.error("Something went wrong while updating the description");
+      toast.error("Something went wrong while updating the section");
     }
   };
 
   const toggleEditing = () => setIsEditing((prev) => !prev);
 
   const handlePromptGeneration = async () => {
+    if (!rollname.trim()) {
+      toast.error("Please enter a position to generate description.");
+      return;
+    }
     try {
       setIsPrompting(true);
       const prompt = `Generate a compelling reason why someone should join the role: ${rollname}.`;
-
       const response = await getGenerativeAIResponse(prompt);
       const cleaned = response.replace(/^'|'$/g, "").replace(/[\*\#]/g, "");
-
       setAiValue(cleaned);
       form.setValue("whyJoinUs", cleaned, { shouldValidate: true });
     } catch {
@@ -77,7 +85,7 @@ export const WhyJoinUsForm = ({ initialData, companyId }: WhyJoinUsFormProps) =>
   };
 
   return (
-    <div className="mt-6 border border-purple-700 bg-black/30 rounded-md p-6 text-purple-300">
+    <div className="mt-6 border border-purple-700 bg-black/30 rounded-md p-4 text-purple-300">
       <div className="font-semibold flex items-center justify-between">
         Why Join Us
         <Button
@@ -99,7 +107,7 @@ export const WhyJoinUsForm = ({ initialData, companyId }: WhyJoinUsFormProps) =>
           {initialData.whyJoinUs ? (
             <Preview value={initialData.whyJoinUs} />
           ) : (
-            <p className="text-sm italic text-purple-600">No description provided</p>
+            <p className="text-sm italic text-purple-500">No description provided</p>
           )}
         </div>
       ) : (
@@ -110,7 +118,7 @@ export const WhyJoinUsForm = ({ initialData, companyId }: WhyJoinUsFormProps) =>
               placeholder="Enter position"
               value={rollname}
               onChange={(e) => setRollname(e.target.value)}
-              className="flex-1 bg-black/20 border-purple-700 text-purple-300 placeholder-purple-500 focus-visible:ring-purple-500"
+              className="flex-1 bg-black/20 border-purple-700 text-purple-300 placeholder-purple-600 focus-visible:ring-purple-600"
               disabled={isSubmitting || isPrompting}
             />
             <Button
@@ -128,10 +136,10 @@ export const WhyJoinUsForm = ({ initialData, companyId }: WhyJoinUsFormProps) =>
           </div>
 
           {aiValue && (
-            <div className="w-full h-96 max-h-96 rounded-md bg-black/20 overflow-y-scroll p-3 relative mt-4 text-purple-300">
+            <div className="relative mt-4 max-h-96 overflow-y-auto rounded-md bg-black/20 border border-purple-700 p-3 text-purple-300">
               {aiValue}
               <Button
-                className="absolute top-3 right-3 z-10 text-purple-300 border border-purple-600"
+                className="absolute top-3 right-3 text-purple-400 hover:text-purple-300"
                 variant="outline"
                 size="icon"
                 onClick={onCopy}
@@ -143,7 +151,7 @@ export const WhyJoinUsForm = ({ initialData, companyId }: WhyJoinUsFormProps) =>
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
-              <Controller
+              <FormField
                 control={form.control}
                 name="whyJoinUs"
                 render={({ field }) => (
@@ -152,7 +160,6 @@ export const WhyJoinUsForm = ({ initialData, companyId }: WhyJoinUsFormProps) =>
                       <Editor
                         value={field.value}
                         onChange={field.onChange}
-                        className="bg-black/20 border-purple-700 text-purple-300 placeholder-purple-500 focus-visible:ring-purple-500"
                       />
                     </FormControl>
                     <FormMessage />

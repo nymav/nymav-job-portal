@@ -23,15 +23,15 @@ export const SidebarRoutesItem = ({ icon: Icon, label, href }: SidebarRoutesItem
     <button
       onClick={() => router.push(href)}
       className={cn(
-        "group flex items-center gap-x-3 text-sm font-medium px-4 py-3 rounded-md transition-all",
-        "hover:bg-purple-800/20 hover:text-purple-100",
+        "group flex items-center gap-x-3 text-sm font-medium px-4 py-3 rounded-lg transition-all w-full",
+        "hover:bg-gray-800/60 hover:text-white",
         isActive
-          ? "bg-purple-800/30 text-purple-300 border-l-4 border-purple-500"
-          : "text-purple-400"
+          ? "bg-gray-800/80 text-white border-l-4 border-white shadow-lg"
+          : "text-gray-300"
       )}
     >
       <Icon
-        className={cn("text-purple-400 group-hover:text-purple-300", isActive && "text-purple-300")}
+        className={cn("text-gray-400 group-hover:text-white transition-colors", isActive && "text-white")}
         size={20}
       />
       <span className="truncate">{label}</span>

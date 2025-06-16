@@ -53,15 +53,15 @@ export const DateFilter = () => {
       className="w-full"
     >
       <Select onValueChange={onChange}>
-        <SelectTrigger className="w-full md:w-48 text-sm border border-purple-700 bg-black/40 text-purple-300 hover:border-purple-400 transition rounded-md shadow-sm backdrop-blur-lg">
+        <SelectTrigger className="w-full md:w-48 text-sm border border-gray-600/40 bg-black/90 text-white hover:border-gray-500 hover:bg-gray-900/90 transition-all rounded-lg shadow-lg backdrop-blur-sm">
           <SelectValue placeholder="📅 Filter By Date" />
         </SelectTrigger>
-        <SelectContent className="z-50 bg-black/90 border border-purple-700 text-purple-300 backdrop-blur-lg shadow-md">
+        <SelectContent className="z-50 bg-black/95 border border-gray-700/50 text-white backdrop-blur-lg shadow-2xl">
           {data.map((item) => (
             <SelectItem
               key={item.value}
               value={item.value}
-              className="text-sm px-3 py-2 hover:bg-purple-800/20 focus:bg-purple-800/30 cursor-pointer transition rounded-sm"
+              className="text-sm px-3 py-2 hover:bg-gray-800/60 focus:bg-gray-800/80 cursor-pointer transition-colors rounded-md"
             >
               {item.label}
             </SelectItem>

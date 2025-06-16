@@ -32,8 +32,8 @@ export const NavbarRoutes = () => {
               variant="outline"
               size="sm"
               className={cn(
-                "text-purple-300 border-purple-600/40 hover:bg-purple-700/10 hover:text-purple-200 transition duration-200",
-                "flex items-center gap-1"
+                "text-white border-gray-600/40 bg-gray-900/60 hover:bg-gray-800/80 hover:text-white hover:border-gray-500 transition-all duration-200",
+                "flex items-center gap-1 rounded-lg font-medium"
               )}
             >
               <LogOut className="w-4 h-4" />
@@ -45,7 +45,7 @@ export const NavbarRoutes = () => {
             <Button
               variant="outline"
               size="sm"
-              className="text-purple-300 border-purple-600/40 hover:bg-purple-700/10 hover:text-purple-200 transition duration-200"
+              className="text-white border-gray-600/40 bg-gray-900/60 hover:bg-gray-800/80 hover:text-white hover:border-gray-500 transition-all duration-200 rounded-lg font-medium"
             >
               Admin Mode
             </Button>

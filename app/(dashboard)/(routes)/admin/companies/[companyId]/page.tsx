@@ -73,10 +73,10 @@ const CompanyEditPage = async ({ params }: CompanyPageProps) => {
           Back
         </div>
       </Link>
-
-      <div className="flex items-center justify-between my-4">
+  
+      <div className="flex items-center justify-between my-6">
         <div className="flex flex-col gap-y-2">
-          <h1 className="text-2xl font-medium text-purple-400">
+          <h1 className="text-2xl font-semibold text-purple-400">
             {isCreateMode ? "Create new company" : "Company setup"}
           </h1>
           {!isCreateMode && (
@@ -86,52 +86,61 @@ const CompanyEditPage = async ({ params }: CompanyPageProps) => {
           )}
         </div>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
-        <div>
-          <div className="flex items-center gap-x-2 mb-4">
-            <IconBadge icon={LayoutDashboard} variant="default" size="default" />
-            <h2 className="text-xl text-purple-300">
-              {isCreateMode ? "Start setting up your company" : "Customize your company"}
-            </h2>
-          </div>
-
-          {!isCreateMode && company && (
-            <CompanyName
-              initialData={{ name: company.name }}
-              companyId={company.id}
-            />
-          )}
-
-          {!isCreateMode && company && (
-            <CompanyDescriptionForm
-              initialData={company}
-              companyId={company.id}
-            />
-          )}
-        </div>
-
+  
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-6">
-          <div>
-            <div className="flex items-center gap-x-2">
-              <IconBadge icon={Network} variant="default" size="default" />
-              <h2 className="text-xl text-purple-300">Company social contacts</h2>
+          <div className="border border-purple-700 rounded-md p-6 bg-black/20">
+            <div className="flex items-center gap-x-2 mb-4">
+              <IconBadge icon={LayoutDashboard} />
+              <h2 className="text-xl text-purple-300 font-medium">
+                {isCreateMode ? "Start setting up your company" : "Customize your company"}
+              </h2>
             </div>
-
-            {company && (
-              <CompanySocialContactsForm initialData={company} companyId={company.id} />
+  
+            {!isCreateMode && company && (
+              <>
+                <CompanyName
+                  initialData={{ name: company.name }}
+                  companyId={company.id}
+                />
+                <CompanyDescriptionForm
+                  initialData={company}
+                  companyId={company.id}
+                />
+              </>
             )}
           </div>
         </div>
-
-        <div className="col-span-2">
+  
+        <div className="space-y-6">
+          <div className="border border-purple-700 rounded-md p-6 bg-black/20">
+            <div className="flex items-center gap-x-2 mb-4">
+              <IconBadge icon={Network} />
+              <h2 className="text-xl text-purple-300 font-medium">Company social contacts</h2>
+            </div>
+  
+            {company && (
+              <CompanySocialContactsForm
+                initialData={company}
+                companyId={company.id}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+  
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        <div className="border border-purple-700 rounded-md p-6 bg-black/20 col-span-2">
           {company && (
             <CompanyOverviewForm initialData={company} companyId={company.id} />
           )}
         </div>
-        {company && (
-          <WhyJoinUsForm initialData={company} companyId={company.id} />
-        )}
+  
+        <div className="border border-purple-700 rounded-md p-6 bg-black/20 col-span-2">
+          {company && (
+            <WhyJoinUsForm initialData={company} companyId={company.id} />
+          )}
+        </div>
       </div>
     </div>
   );

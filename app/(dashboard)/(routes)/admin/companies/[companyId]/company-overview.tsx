@@ -25,10 +25,7 @@ const formSchema = z.object({
   overview: z.string().min(1),
 });
 
-export const CompanyOverviewForm = ({
-  initialData,
-  companyId,
-}: CompanyOverviewFormProps) => {
+export const CompanyOverviewForm = ({ initialData, companyId }: CompanyOverviewFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [rollname, setRollname] = useState("");
   const [aiValue, setAiValue] = useState("");
@@ -76,7 +73,6 @@ export const CompanyOverviewForm = ({
       form.setValue("overview", cleaned);
       form.trigger("overview");
     } catch (error) {
-      //console.error(error);
       toast.error("Failed to generate description");
     } finally {
       setIsPrompting(false);

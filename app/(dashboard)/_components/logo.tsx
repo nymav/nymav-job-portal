@@ -9,7 +9,7 @@ export const Logo = () => {
         alt="Logo"
         width={48}
         height={48}
-        className="object-contain rounded-lg shadow-md"
+        className="object-contain rounded-lg shadow-lg filter drop-shadow-lg"
         priority
       />
     </div>

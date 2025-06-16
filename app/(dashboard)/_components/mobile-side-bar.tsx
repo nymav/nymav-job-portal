@@ -13,13 +13,13 @@ import { Sidebar } from "./sidebar";
 export const MobileSideBar = () => {
   return (
     <Sheet>
-      <SheetTrigger className="md:hidden p-2 rounded-md hover:bg-purple-800/10 text-purple-300 transition flex items-center justify-center">
+      <SheetTrigger className="md:hidden p-2 rounded-lg hover:bg-gray-800/60 text-white transition-colors flex items-center justify-center">
         <Menu size={22} />
       </SheetTrigger>
 
       <SheetContent
         side="left"
-        className="w-64 bg-black/40 backdrop-blur-xl p-0  border-purple-700 shadow-2xl"
+        className="w-64 bg-black/95 backdrop-blur-xl p-0 border-gray-800/50 shadow-2xl"
       >
         {/* Radix A11y Header */}
         <SheetHeader className="sr-only">

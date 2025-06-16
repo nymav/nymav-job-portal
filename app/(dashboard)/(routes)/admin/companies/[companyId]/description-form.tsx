@@ -38,6 +38,8 @@ export const CompanyDescriptionForm = ({
 
   const { isSubmitting, isValid } = form.formState;
 
+  const toggleEditing = () => setIsEditing((cur) => !cur);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/companies/${companyId}`, values);
@@ -49,14 +51,16 @@ export const CompanyDescriptionForm = ({
     }
   };
 
-  const toggleEditing = () => setIsEditing((cur) => !cur);
-
   return (
     <div className="mt-6 border border-purple-700 bg-black/30 rounded-md p-4 text-purple-300">
       <div className="font-semibold flex items-center justify-between">
         Company description
         <Button variant="ghost" className="text-purple-400 hover:text-purple-300" onClick={toggleEditing}>
-          {isEditing ? "Cancel" : <><Pencil className="w-4 h-4 mr-2" /> Edit description</>}
+          {isEditing ? "Cancel" : (
+            <>
+              <Pencil className="w-4 h-4 mr-2" /> Edit description
+            </>
+          )}
         </Button>
       </div>
 

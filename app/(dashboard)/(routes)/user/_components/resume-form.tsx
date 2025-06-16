@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Pencil } from "lucide-react";
+import { Pencil, FileText, ExternalLink } from "lucide-react";
 
 interface ResumeFormProps {
   initialData?: UserProfile & { resumes: Resumes[] };
@@ -85,32 +85,55 @@ export const ResumeForm = ({ initialData, userId }: ResumeFormProps) => {
   };
 
   return (
-    <div className="mt-6 border border-purple-700 bg-black/30 rounded-md p-6 text-purple-300">
-      <div className="flex items-center justify-between font-semibold">
+    <div className="bg-gray-800/40 backdrop-blur-sm border border-gray-600/40 rounded-xl p-6 hover:bg-gray-700/50 hover:border-gray-500/50 transition-all duration-300">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center">
+          <FileText className="w-5 h-5 text-gray-400 mr-2" />
+          <span className="font-medium text-white">Resume Document</span>
+        </div>
         <Button
           onClick={toggleEditing}
           variant="ghost"
-          className="text-purple-400 hover:text-purple-300"
+          className="text-gray-400 hover:text-white hover:bg-gray-700/50 transition-colors"
         >
-          {isEditing ? "Cancel" : <><Pencil className="w-4 h-4 mr-2" /> Edit</>}
+          {isEditing ? (
+            "Cancel"
+          ) : (
+            <>
+              <Pencil className="w-4 h-4 mr-2" />
+              Edit
+            </>
+          )}
         </Button>
       </div>
 
       {!isEditing && (
-        <p className="text-sm mt-2 break-words">
+        <div className="space-y-3">
           {previewUrl ? (
-            <a href={previewUrl} target="_blank" rel="noopener noreferrer" className="underline">
-              View Resume
-            </a>
+            <div className="flex items-center justify-between bg-gray-900/50 rounded-lg p-3 border border-gray-600/30">
+              <span className="text-sm text-gray-300 truncate mr-2">Resume uploaded</span>
+              <a
+                href={previewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors"
+              >
+                <ExternalLink className="w-4 h-4 mr-1" />
+                View Resume
+              </a>
+            </div>
           ) : (
-            "No resume linked"
+            <div className="text-center py-8 text-gray-500 bg-gray-900/30 rounded-lg border border-gray-600/20 border-dashed">
+              <FileText className="w-8 h-8 mx-auto mb-2 text-gray-600" />
+              <p className="text-sm">No resume uploaded yet</p>
+            </div>
           )}
-        </p>
+        </div>
       )}
 
       {isEditing && (
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="resumeUrl"
@@ -120,8 +143,8 @@ export const ResumeForm = ({ initialData, userId }: ResumeFormProps) => {
                     <Input
                       {...field}
                       disabled={isSubmitting}
-                      placeholder="Paste resume URL"
-                      className="bg-black/20 border-purple-700 text-purple-300 placeholder-purple-500"
+                      placeholder="Paste resume URL (Google Drive, Dropbox, etc.)"
+                      className="bg-gray-900/50 border-gray-600/50 text-white placeholder-gray-500 focus:border-gray-500 focus:ring-gray-500/20"
                     />
                   </FormControl>
                   <FormMessage />
@@ -130,39 +153,43 @@ export const ResumeForm = ({ initialData, userId }: ResumeFormProps) => {
             />
 
             {previewUrl && (
-              <div className="mt-4 border border-purple-700 rounded p-2 bg-black/20">
+              <div className="bg-gray-900/50 border border-gray-600/40 rounded-lg p-4">
+                <h4 className="text-sm font-medium text-gray-300 mb-3">Preview</h4>
                 {isPdf(previewUrl) ? (
                   <iframe
                     src={previewUrl}
                     title="Resume PDF Preview"
-                    className="w-full h-64"
+                    className="w-full h-64 rounded border border-gray-600/30"
                   />
                 ) : isImage(previewUrl) ? (
                   <img
                     src={previewUrl}
                     alt="Resume Preview"
-                    className="max-h-64 mx-auto"
+                    className="max-h-64 mx-auto rounded border border-gray-600/30"
                   />
                 ) : (
-                  <a
-                    href={previewUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline"
-                  >
-                    Open Resume Link
-                  </a>
+                  <div className="text-center py-4">
+                    <a
+                      href={previewUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium"
+                    >
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      Open Resume Link
+                    </a>
+                  </div>
                 )}
               </div>
             )}
 
-            <div className="flex items-center gap-x-2">
+            <div className="flex items-center gap-x-3 pt-2">
               <Button
                 type="submit"
                 disabled={!isValid || isSubmitting}
-                className="bg-purple-800 hover:bg-purple-900 text-white"
+                className="bg-white text-black hover:bg-gray-100 font-medium px-6 py-2 rounded-lg transition-all duration-200"
               >
-                {isSubmitting ? "Saving..." : "Save"}
+                {isSubmitting ? "Saving..." : "Save Resume"}
               </Button>
             </div>
           </form>

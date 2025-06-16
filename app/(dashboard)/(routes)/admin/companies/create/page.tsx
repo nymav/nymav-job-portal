@@ -41,13 +41,13 @@ const CompanyCreatePage = () => {
       toast.success("Company created");
     } catch (error) {
       console.log((error as Error).message);
-      toast.error((error as Error).message);
+      toast.error("Failed to create company");
     }
   };
 
   return (
-    <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
-      <div className="w-full bg-black/30 rounded-md p-8 text-purple-300 border border-purple-700 shadow-md">
+    <div className="max-w-4xl mx-auto flex md:items-center md:justify-center min-h-[80vh] p-6">
+      <div className="w-full bg-black/30 rounded-xl p-8 text-purple-300 border border-purple-700 shadow-lg">
         <h1 className="text-2xl font-semibold text-purple-400">Name your Company</h1>
         <p className="text-sm text-purple-500 mt-1">
           What would you like to name your company? Don&apos;t worry, you can change this later.
@@ -63,19 +63,21 @@ const CompanyCreatePage = () => {
                   <FormLabel className="text-purple-300">Company Name</FormLabel>
                   <FormControl>
                     <Input
-                      className="bg-black/20 border-purple-700 text-purple-200 placeholder-purple-500 focus-visible:ring-purple-500"
+                      {...field}
                       disabled={isSubmitting}
                       placeholder="e.g. 'AI Studios'"
-                      {...field}
+                      className="bg-black/20 border border-purple-700 text-purple-200 placeholder-purple-500 focus-visible:ring-purple-500"
                     />
                   </FormControl>
-                  <FormDescription className="text-purple-500">This will be displayed publicly.</FormDescription>
-                  <FormMessage />
+                  <FormDescription className="text-purple-500">
+                    This will be displayed publicly.
+                  </FormDescription>
+                  <FormMessage className="text-red-400" />
                 </FormItem>
               )}
             />
 
-            <div className="flex items-center gap-x-2">
+            <div className="flex items-center gap-x-3">
               <Link href="/admin/jobs">
                 <Button type="button" variant="ghost" className="text-purple-400 hover:text-purple-300">
                   Cancel
@@ -84,7 +86,7 @@ const CompanyCreatePage = () => {
               <Button
                 type="submit"
                 disabled={!isValid || isSubmitting}
-                className="bg-purple-800 hover:bg-purple-900 text-white"
+                className="bg-purple-700 hover:bg-purple-800 text-white"
               >
                 {isSubmitting ? "Creating..." : "Continue"}
               </Button>

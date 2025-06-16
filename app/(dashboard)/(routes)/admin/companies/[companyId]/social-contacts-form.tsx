@@ -1,11 +1,16 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Company } from "@/lib/generated/prisma";
-import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Pencil } from "lucide-react";
@@ -85,177 +90,102 @@ export const CompanySocialContactsForm = ({
         </Button>
       </div>
 
-      {!isEditing && (
-        <div className="space-y-2 text-sm mt-4">
-          <p>{initialData.mail || <span className="italic text-purple-600">Not provided</span>}</p>
-          <p>{initialData.website || <span className="italic text-purple-600">Not provided</span>}</p>
-          <p>{initialData.linkedIn || <span className="italic text-purple-600">Not provided</span>}</p>
-          <p>{initialData.address_line_1 || <span className="italic text-purple-600">Not provided</span>}</p>
-          <p>{initialData.address_line_2 || <span className="italic text-purple-600">Not provided</span>}</p>
-          <p>{initialData.city || <span className="italic text-purple-600">Not provided</span>}</p>
-          <p>{initialData.state || <span className="italic text-purple-600">Not provided</span>}</p>
-          <p>{initialData.zipcode || <span className="italic text-purple-600">Not provided</span>}</p>
+      {!isEditing ? (
+        <div className="grid grid-cols-2 gap-4 text-sm mt-4">
+          {[
+            ["Email", initialData.mail],
+            ["Website", initialData.website],
+            ["LinkedIn", initialData.linkedIn],
+            ["Address Line 1", initialData.address_line_1],
+            ["Address Line 2", initialData.address_line_2],
+            ["City", initialData.city],
+            ["State", initialData.state],
+            ["Zipcode", initialData.zipcode],
+          ].map(([label, value]) => (
+            <p key={label}>
+              <span className="text-purple-400">{label}: </span>
+              {value || <span className="italic text-purple-600">Not provided</span>}
+            </p>
+          ))}
         </div>
-      )}
-
-      {isEditing && (
+      ) : (
         <Form {...form}>
-          <div className="space-y-5 mt-4">
-            <FormField
-              name="mail"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      disabled={isSubmitting}
-                      placeholder="Email"
-                      {...field}
-                      className="bg-black/20 border-purple-700 text-purple-300 placeholder-purple-500 focus-visible:ring-purple-500"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 mt-4">
+            {["mail", "website", "linkedIn"].map((fieldName) => (
+              <FormField
+                key={fieldName}
+                name={fieldName as keyof z.infer<typeof formSchema>}
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        disabled={isSubmitting}
+                        placeholder={fieldName[0].toUpperCase() + fieldName.slice(1)}
+                        {...field}
+                        className="bg-black/20 border-purple-700 text-purple-300 placeholder-purple-500 focus-visible:ring-purple-500"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ))}
 
-            <FormField
-              name="website"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      disabled={isSubmitting}
-                      placeholder="Website"
-                      {...field}
-                      className="bg-black/20 border-purple-700 text-purple-300 placeholder-purple-500 focus-visible:ring-purple-500"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              name="linkedIn"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      disabled={isSubmitting}
-                      placeholder="LinkedIn"
-                      {...field}
-                      className="bg-black/20 border-purple-700 text-purple-300 placeholder-purple-500 focus-visible:ring-purple-500"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              name="address_line_1"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Textarea
-                      disabled={isSubmitting}
-                      placeholder="Address Line 1"
-                      {...field}
-                      className="bg-black/20 border-purple-700 text-purple-300 placeholder-purple-500 focus-visible:ring-purple-500"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              name="address_line_2"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Textarea
-                      disabled={isSubmitting}
-                      placeholder="Address Line 2"
-                      {...field}
-                      className="bg-black/20 border-purple-700 text-purple-300 placeholder-purple-500 focus-visible:ring-purple-500"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {["address_line_1", "address_line_2"].map((fieldName) => (
+              <FormField
+                key={fieldName}
+                name={fieldName as keyof z.infer<typeof formSchema>}
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Textarea
+                        disabled={isSubmitting}
+                        placeholder={fieldName.replaceAll("_", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+                        {...field}
+                        className="bg-black/20 border-purple-700 text-purple-300 placeholder-purple-500 focus-visible:ring-purple-500"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ))}
 
             <div className="grid grid-cols-3 gap-4">
-              <FormField
-                name="city"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        disabled={isSubmitting}
-                        placeholder="City"
-                        {...field}
-                        className="bg-black/20 border-purple-700 text-purple-300 placeholder-purple-500 focus-visible:ring-purple-500"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="state"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        disabled={isSubmitting}
-                        placeholder="State"
-                        {...field}
-                        className="bg-black/20 border-purple-700 text-purple-300 placeholder-purple-500 focus-visible:ring-purple-500"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="zipcode"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        disabled={isSubmitting}
-                        placeholder="Zipcode"
-                        {...field}
-                        className="bg-black/20 border-purple-700 text-purple-300 placeholder-purple-500 focus-visible:ring-purple-500"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {["city", "state", "zipcode"].map((fieldName) => (
+                <FormField
+                  key={fieldName}
+                  name={fieldName as keyof z.infer<typeof formSchema>}
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          disabled={isSubmitting}
+                          placeholder={fieldName[0].toUpperCase() + fieldName.slice(1)}
+                          {...field}
+                          className="bg-black/20 border-purple-700 text-purple-300 placeholder-purple-500 focus-visible:ring-purple-500"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
             </div>
 
             <div className="flex items-center gap-x-2">
               <Button
                 type="submit"
-                onClick={form.handleSubmit(onSubmit)}
                 disabled={!isValid || isSubmitting}
                 className="bg-purple-800 hover:bg-purple-900 text-white"
               >
-                Save
+                {isSubmitting ? "Saving..." : "Save"}
               </Button>
             </div>
-          </div>
+          </form>
         </Form>
       )}
     </div>

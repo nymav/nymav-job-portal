@@ -42,13 +42,12 @@ export const SidebarRoutes = () => {
       ))}
 
       {mounted && isSearchPage && (
-        <Box className="mt-6 pt-4 border-purple-700">
-        <h2 className="text-sm font-semibold text-purple-400 mb-3"></h2>
-        <div className="flex flex-col gap-4">
-          <SearchContainer />
-          <DateFilter />
-        </div>
-      </Box>
+        <Box className="mt-6 pt-4 border-t border-gray-700/50">
+          <div className="flex flex-col gap-4">
+            <SearchContainer />
+            <DateFilter />
+          </div>
+        </Box>
       )}
     </div>
   );

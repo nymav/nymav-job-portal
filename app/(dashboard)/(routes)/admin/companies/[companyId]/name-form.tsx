@@ -1,7 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -49,16 +55,28 @@ export const CompanyName = ({ initialData, companyId }: CompanyNameProps) => {
   const toggleEditing = () => setIsEditing((cur) => !cur);
 
   return (
-    <div className="mt-6 border border-purple-700 bg-black/30 rounded-md p-4 text-purple-300">
-      <div className="font-semibold flex items-center justify-between">
-        Company name
-        <Button variant="ghost" className="text-purple-400 hover:text-purple-300" onClick={toggleEditing}>
-          {isEditing ? "Cancel" : <><Pencil className="w-4 h-4 mr-2" /> Edit name</>}
+    <div className="mt-6 border border-purple-700 bg-black/20 rounded-xl p-5 text-purple-300 shadow-md">
+      <div className="flex items-center justify-between">
+        <h3 className="text-md font-semibold">Company name</h3>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={toggleEditing}
+          className="text-purple-400 hover:text-purple-300 px-2"
+        >
+          {isEditing ? (
+            "Cancel"
+          ) : (
+            <>
+              <Pencil className="w-4 h-4 mr-1" />
+              Edit
+            </>
+          )}
         </Button>
       </div>
 
       {!isEditing && (
-        <p className="text-sm mt-2">{initialData.name}</p>
+        <p className="text-sm mt-2 text-purple-400">{initialData.name}</p>
       )}
 
       {isEditing && (
@@ -71,22 +89,22 @@ export const CompanyName = ({ initialData, companyId }: CompanyNameProps) => {
                 <FormItem>
                   <FormControl>
                     <Input
+                      {...field}
                       disabled={isSubmitting}
                       placeholder="Enter company name"
-                      {...field}
-                      className="bg-black/20 border-purple-700 text-purple-300 placeholder-purple-600 focus-visible:ring-purple-600"
+                      className="bg-black/30 border border-purple-700 text-purple-300 placeholder-purple-600 focus-visible:ring-purple-600"
                     />
                   </FormControl>
-                  <FormMessage className="text-destructive" />
+                  <FormMessage className="text-red-400 text-sm" />
                 </FormItem>
               )}
             />
 
-            <div className="flex items-center gap-x-2">
+            <div className="flex items-center gap-x-3">
               <Button
-                disabled={!isValid || isSubmitting}
                 type="submit"
-                className="bg-purple-800 hover:bg-purple-900 text-white"
+                disabled={!isValid || isSubmitting}
+                className="bg-purple-700 hover:bg-purple-800 text-white transition"
               >
                 {isSubmitting ? "Saving..." : "Save"}
               </Button>
