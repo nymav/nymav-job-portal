@@ -11,13 +11,13 @@ export const CategoriesList = ({ categories }: CategoriesListProps) => {
   return (
     <nav
       aria-label="Job Categories"
-      className="flex items-center gap-x-3 overflow-x-auto pb-3 scrollbar-thin scrollbar-thumb-purple-700 scrollbar-track-transparent"
+      className="flex items-center gap-x-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-600/50 scrollbar-track-transparent px-2"
     >
       {categories.map((category) => (
         <CategoryListItem
           key={category.id}
           label={category.name}
-          value={category.id.toString()} // ensure string
+          value={category.id.toString()}
         />
       ))}
     </nav>

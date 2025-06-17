@@ -18,7 +18,6 @@ const CategoryListItem = ({ label, value }: CategoryListItemProps) => {
   const currentCategoryId = searchParams.get("categoryId");
   const currentTitle = searchParams.get("title");
 
-  // Defensive toString() for comparison
   const isSelected = currentCategoryId === value.toString();
 
   const onClick = () => {
@@ -39,10 +38,13 @@ const CategoryListItem = ({ label, value }: CategoryListItemProps) => {
     <Button
       type="button"
       onClick={onClick}
-      variant="outline"
+      variant="ghost"
       className={cn(
-        "whitespace-nowrap text-xs font-medium rounded-full px-3 py-1 transition-colors duration-200 border bg-black/10 backdrop-blur text-gray-300 hover:bg-purple-800/30 hover:text-white",
-        isSelected && "bg-purple-800 text-white border-purple-500 shadow-md"
+        "whitespace-nowrap text-sm font-medium rounded-xl px-6 py-3 transition-all duration-300",
+        "bg-gray-900/60 backdrop-blur-sm border border-gray-700/50 text-gray-300",
+        "hover:bg-gray-800/70 hover:border-gray-600/60 hover:text-white hover:scale-105",
+        "shadow-sm hover:shadow-lg",
+        isSelected && "bg-white text-black border-gray-400 shadow-lg scale-105"
       )}
     >
       {label}

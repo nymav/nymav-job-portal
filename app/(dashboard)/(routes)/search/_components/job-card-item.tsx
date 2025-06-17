@@ -15,6 +15,7 @@ import {
   Layers,
   Loader2,
   Network,
+  MapPin,
 } from "lucide-react";
 import { cn, formattedString } from "@/lib/utils";
 import Link from "next/link";
@@ -33,7 +34,6 @@ export const JobCardItem = ({ job, userId }: JobCardItemProps) => {
   const isSavedByUser = Boolean(userId && job.savedUsers?.includes(userId));
   const SavedIcon = isSavedByUser ? BookmarkCheck : Bookmark;
   const router = useRouter();
-  
 
   const onClickSaveJob = async () => {
     if (!userId) {
@@ -65,39 +65,40 @@ export const JobCardItem = ({ job, userId }: JobCardItemProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4 }}
-      className="rounded-xl border border-gray-700 bg-black/20 backdrop-blur p-5 shadow-sm hover:shadow-xl transition duration-300 w-full h-full flex flex-col justify-between"
+      className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 shadow-sm hover:bg-gray-800/70 hover:border-gray-600/60 hover:shadow-2xl hover:scale-105 transition-all duration-300 w-full h-full flex flex-col justify-between group"
     >
       {/* Header */}
-      <Box className="justify-between items-start">
-        <p className="text-sm text-purple-300">
+      <Box className="justify-between items-start mb-4">
+        <p className="text-sm text-gray-400 font-medium">
           {formatDistanceToNow(new Date(job.createdAt), { addSuffix: true })}
         </p>
         <Button
           variant="ghost"
           size="icon"
-          className="text-purple-400 hover:text-purple-300"
+          className="text-gray-400 hover:text-white hover:bg-gray-700/50 transition-all duration-200"
           onClick={onClickSaveJob}
           aria-label="Toggle Bookmark"
         >
           {isBookmarkedLoading ? (
             <Loader2 className="w-4 h-4 animate-spin" />
           ) : (
-            <SavedIcon className="w-4 h-4" />
+            <SavedIcon className={cn("w-4 h-4", isSavedByUser && "text-white fill-white")} />
           )}
         </Button>
       </Box>
 
       {/* Title & Company */}
-      <Box className="items-start mt-2">
+      <Box className="items-start mb-4">
         <div className="w-full">
-          <p className="text-purple-400 font-semibold text-base truncate">
+          <h3 className="text-white font-semibold text-lg mb-2 group-hover:text-gray-100 transition-colors truncate">
             {job.title}
-          </p>
+          </h3>
           {company && (
             <Link
               href={`/company/${company.id}`}
-              className="text-xs text-purple-500 hover:underline"
+              className="text-sm text-gray-400 hover:text-white hover:underline transition-colors inline-flex items-center"
             >
+              <BriefcaseBusiness className="w-4 h-4 mr-1" />
               {company.name}
             </Link>
           )}
@@ -105,78 +106,89 @@ export const JobCardItem = ({ job, userId }: JobCardItemProps) => {
       </Box>
 
       {/* Meta Info */}
-      <Box className="flex flex-wrap gap-2 mt-3 text-purple-300 text-xs">
+      <div className="flex flex-wrap gap-3 mb-4 text-gray-300 text-sm">
         {job.shiftTiming && (
-          <div className="flex items-center">
-            <BriefcaseBusiness className="w-4 h-4 mr-1" />
+          <div className="flex items-center bg-gray-800/60 px-3 py-1 rounded-lg">
+            <BriefcaseBusiness className="w-4 h-4 mr-2" />
             {formattedString(job.shiftTiming)}
           </div>
         )}
         {job.workMode && (
-          <div className="flex items-center">
-            <Layers className="w-4 h-4 mr-1" />
+          <div className="flex items-center bg-gray-800/60 px-3 py-1 rounded-lg">
+            <MapPin className="w-4 h-4 mr-2" />
             {formattedString(job.workMode)}
           </div>
         )}
         {job.hourlyRate && (
-          <div className="flex items-center">
-            <Currency className="w-4 h-4 mr-1" />
+          <div className="flex items-center bg-gray-800/60 px-3 py-1 rounded-lg">
+            <Currency className="w-4 h-4 mr-2" />
             {`${formattedString(job.hourlyRate)} $/hr`}
           </div>
         )}
         {job.yearsOfExperience && (
-          <div className="flex items-center">
-            <Network className="w-4 h-4 mr-1" />
+          <div className="flex items-center bg-gray-800/60 px-3 py-1 rounded-lg">
+            <Network className="w-4 h-4 mr-2" />
             {formattedString(job.yearsOfExperience)}
           </div>
         )}
         {job.category?.name && (
-          <div className="flex items-center">
-            <Layers className="w-4 h-4 mr-1" />
+          <div className="flex items-center bg-gray-800/60 px-3 py-1 rounded-lg">
+            <Layers className="w-4 h-4 mr-2" />
             {job.category.name}
           </div>
         )}
-      </Box>
+      </div>
 
       {/* Description */}
       {job.short_description && (
-        <CardDescription className="text-xs mt-3 text-gray-300 leading-snug">
+        <CardDescription className="text-sm mb-4 text-gray-300 leading-relaxed line-clamp-3">
           {job.short_description}
         </CardDescription>
       )}
 
       {/* Tags */}
       {job.tags?.length > 0 && (
-        <Box className="flex flex-wrap gap-2 mt-3">
-          {job.tags.slice(0, 6).map((tag, i) => (
+        <div className="flex flex-wrap gap-2 mb-6">
+          {job.tags.slice(0, 4).map((tag, i) => (
             <span
               key={`${tag}-${i}`}
-              className="bg-gray-800 text-gray-300 text-xs px-3 py-1 rounded-full"
+              className="bg-gray-800/80 text-gray-300 text-xs px-3 py-1 rounded-full border border-gray-700/50"
             >
               {tag}
             </span>
           ))}
-        </Box>
+          {job.tags.length > 4 && (
+            <span className="text-xs text-gray-500 px-2 py-1">
+              +{job.tags.length - 4} more
+            </span>
+          )}
+        </div>
       )}
 
       {/* Actions */}
-      <Box className="flex flex-col gap-2 mt-4">
+      <div className="flex flex-col gap-3 mt-auto">
         <Link href={`/search/${job.id}`} className="w-full">
           <Button
-            className="w-full border-purple-500 text-purple-400 hover:text-white hover:bg-purple-500/10"
+            className="w-full bg-gray-800/80 hover:bg-gray-700/90 text-white border border-gray-600/40 hover:border-gray-500/60 hover:scale-105 transition-all duration-200 shadow-lg"
             variant="outline"
           >
-            Details
+            View Details
           </Button>
         </Link>
         <Button
-          className="w-full text-white bg-purple-800 hover:bg-purple-900"
+          className="w-full text-black bg-white hover:bg-gray-100 hover:scale-105 transition-all duration-200 shadow-lg font-semibold"
           variant="default"
           onClick={onClickSaveJob}
+          disabled={isBookmarkedLoading}
         >
-          {isSavedByUser ? "Saved" : "Save for later"}
+          {isBookmarkedLoading ? (
+            <Loader2 className="w-4 h-4 animate-spin mr-2" />
+          ) : (
+            <SavedIcon className="w-4 h-4 mr-2" />
+          )}
+          {isSavedByUser ? "Saved" : "Save Job"}
         </Button>
-      </Box>
+      </div>
     </motion.div>
   );
 };

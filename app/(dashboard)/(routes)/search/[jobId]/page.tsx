@@ -11,7 +11,6 @@ import type {
   UserProfile,
 } from "@/lib/generated/prisma";
 
-// ✅ Fix: Await params since it's a Promise in Next.js 15
 const JobDetailsPage = async ({
   params,
 }: {
@@ -50,13 +49,20 @@ const JobDetailsPage = async ({
     : null;
 
   return (
-    <div className="flex flex-col p-4 md:p-8 max-w-4xl mx-auto">
-      <JobDetailsPageContent
-        job={job}
-        jobId={job.id}
-        userProfileInitial={profile}
-        currentUserId={userId}
-      />
+    <div className="min-h-screen py-8 px-4 sm:px-6 text-white bg-transparent font-sans">
+      <div className="max-w-6xl mx-auto">
+        {/* Background gradient effect */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/20 via-transparent to-gray-800/20 pointer-events-none" />
+        
+        <div className="relative">
+          <JobDetailsPageContent
+            job={job}
+            jobId={job.id}
+            userProfileInitial={profile}
+            currentUserId={userId}
+          />
+        </div>
+      </div>
     </div>
   );
 };
