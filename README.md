@@ -4,7 +4,7 @@ A comprehensive, full-stack job portal skeleton built with Next.js 15, featuring
 
 <div align="center">
   <img src="./public/img/Dashboard.png" alt="First Image" width="300">
-  <img src="./public/img/Searchpage.png" alt="Second Image" width="300">
+  <img src="./public/img/Searchpage.png" alt="Second Image">
 </div>
 
 ✨ Features
