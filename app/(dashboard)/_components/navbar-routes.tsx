@@ -47,7 +47,7 @@ export const NavbarRoutes = () => {
               size="sm"
               className="text-white border-gray-600/40 bg-gray-900/60 hover:bg-gray-800/80 hover:text-white hover:border-gray-500 transition-all duration-200 rounded-lg font-medium"
             >
-              Admin Mode
+              Hub
             </Button>
           </Link>
         )}
