@@ -2,7 +2,10 @@
 
 A comprehensive, full-stack job portal skeleton built with Next.js 15, featuring advanced search capabilities, user authentication, AI-powered content generation, and a modern glassmorphism UI design. This project serves as a flexible foundation that can be easily customized, extended, or modified to suit your specific requirements.
 
-![Job Portal Banner](https://via.placeholder.com/1200x400/1f2937/ffffff?text=Modern+Job+Portal)
+<div align="center">
+  <img src="./public/img/Dashboard.png" alt="First Image" width="300">
+  <img src="./public/img/Searchpage.png" alt="Second Image" width="300">
+</div>
 
 ✨ Features
 
@@ -85,41 +88,195 @@ A comprehensive, full-stack job portal skeleton built with Next.js 15, featuring
 - **Email Templates** - HTML email templates
 
 📁 Project Structure
-
 ```
 job-portal/
-├── actions/                    # Server actions
-│   ├── get-jobs.ts            # Job fetching logic
-│   └── get-overview.ts        # Dashboard overview data
-├── app/                       # Next.js app directory
-│   ├── (auth)/               # Authentication pages
-│   ├── (dashboard)/          # Protected dashboard pages
-│   ├── api/                  # API routes
-│   ├── globals.css           # Global styles
-│   └── layout.tsx            # Root layout
-├── components/               # Reusable components
-│   ├── ui/                   # UI component library
-│   ├── banner.tsx            # Notification banners
-│   ├── editor.tsx            # Rich text editor
-│   ├── preview.tsx           # Content preview
-│   └── search-container.tsx  # Search functionality
-├── hooks/                    # Custom React hooks
-│   └── use-debounce.ts       # Debounced input hook
-├── lib/                      # Utility libraries
-│   ├── generated/            # Prisma generated types
-│   ├── db.ts                 # Database connection
-│   ├── mail.ts               # Email utilities
-│   ├── ai.ts                 # AI integration utilities
-│   └── utils.ts              # General utilities
-├── prisma/                   # Database schema
-│   └── schema.prisma         # Prisma schema file
-├── providers/                # Context providers
-│   └── toast-provider.tsx    # Toast notification provider
-├── public/                   # Static assets
-│   └── img/                  # Image assets
-└── scripts/                  # Utility scripts
-    ├── aistudio.ts           # AI integration
-    └── seeds.ts              # Database seeding
+├── actions/                          # Server actions
+│   ├── get-jobs.ts                   # Fetch jobs data
+│   └── get-overview.ts               # Dashboard overview data
+│
+├── app/                              # Next.js App Router
+│   ├── (auth)/                       # Authentication routes group
+│   │   ├── (routes)/
+│   │   │   ├── sign-in/
+│   │   │   │   └── [[...sign-in]]/
+│   │   │   │       └── page.tsx      # Sign-in page
+│   │   │   └── sign-up/
+│   │   │       └── [[...sign-up]]/
+│   │   │           └── page.tsx      # Sign-up page
+│   │   └── layout.tsx                # Auth layout
+│   │
+│   ├── (dashboard)/                  # Main application routes
+│   │   ├── _components/              # Dashboard shared components
+│   │   │   ├── data-filter.tsx       # Data filtering component
+│   │   │   ├── logo.tsx              # App logo component
+│   │   │   ├── mobile-side-bar.tsx   # Mobile navigation
+│   │   │   ├── navbar-routes.tsx     # Navigation routes
+│   │   │   ├── navbar.tsx            # Top navigation bar
+│   │   │   ├── side-bar-route-item.tsx # Sidebar navigation item
+│   │   │   ├── sidebar-routes.tsx    # Sidebar routes configuration
+│   │   │   └── sidebar.tsx           # Main sidebar component
+│   │   │
+│   │   ├── (routes)/
+│   │   │   ├── admin/                # Admin panel
+│   │   │   │   ├── analytics/
+│   │   │   │   │   └── page.tsx      # Analytics dashboard
+│   │   │   │   ├── companies/        # Company management
+│   │   │   │   │   ├── _components/
+│   │   │   │   │   │   └── columns.tsx # Table columns definition
+│   │   │   │   │   ├── [companyId]/  # Individual company pages
+│   │   │   │   │   │   ├── company-overview.tsx
+│   │   │   │   │   │   ├── description-form.tsx
+│   │   │   │   │   │   ├── name-form.tsx
+│   │   │   │   │   │   ├── page.tsx
+│   │   │   │   │   │   ├── social-contacts-form.tsx
+│   │   │   │   │   │   └── why-join-us-form.tsx
+│   │   │   │   │   ├── create/
+│   │   │   │   │   │   └── page.tsx  # Create new company
+│   │   │   │   │   └── page.tsx      # Companies listing
+│   │   │   │   ├── create/
+│   │   │   │   │   └── page.tsx      # Create new job
+│   │   │   │   └── jobs/             # Job management
+│   │   │   │       ├── _components/
+│   │   │   │       │   └── columns.tsx
+│   │   │   │       ├── [jobId]/      # Individual job management
+│   │   │   │       │   ├── _components/
+│   │   │   │       │   │   ├── category-form.tsx
+│   │   │   │       │   │   ├── company-form.tsx
+│   │   │   │       │   │   ├── horuly-rate-form.tsx
+│   │   │   │       │   │   ├── job-description.tsx
+│   │   │   │       │   │   ├── job-publish-actions.tsx
+│   │   │   │       │   │   ├── shift-timing-mode.tsx
+│   │   │   │       │   │   ├── short-description.tsx
+│   │   │   │       │   │   ├── tags-form.tsx
+│   │   │   │       │   │   ├── title-form.tsx
+│   │   │   │       │   │   ├── work-experience-form.tsx
+│   │   │   │       │   │   └── work-mode-form.tsx
+│   │   │   │       │   ├── applicants/ # Job applicants management
+│   │   │   │       │   │   ├── _components/
+│   │   │   │       │   │   │   └── columns.tsx
+│   │   │   │       │   │   └── page.tsx
+│   │   │   │       │   └── page.tsx
+│   │   │   │       └── page.tsx      # Jobs listing
+│   │   │   ├── page.tsx              # Dashboard home
+│   │   │   ├── savedJobs/
+│   │   │   │   └── page.tsx          # Saved jobs page
+│   │   │   ├── search/               # Job search functionality
+│   │   │   │   ├── _components/
+│   │   │   │   │   ├── categories-list.tsx
+│   │   │   │   │   ├── category-list-item.tsx
+│   │   │   │   │   ├── job-card-item.tsx
+│   │   │   │   │   └── page-content.tsx
+│   │   │   │   ├── [jobId]/          # Job details
+│   │   │   │   │   ├── _components/
+│   │   │   │   │   │   └── job-details-page-content.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── page.tsx          # Search results
+│   │   │   └── user/                 # User profile management
+│   │   │       ├── _components/
+│   │   │       │   ├── contact-form.tsx
+│   │   │       │   ├── email-form.tsx
+│   │   │       │   ├── name-form.tsx
+│   │   │       │   └── resume-form.tsx
+│   │   │       └── page.tsx
+│   │   └── layout.tsx                # Dashboard layout
+│   │
+│   ├── api/                          # API routes
+│   │   ├── companies/
+│   │   │   ├── [companyId]/
+│   │   │   │   └── route.ts          # Company CRUD operations
+│   │   │   └── route.ts              # Companies API
+│   │   ├── jobs/
+│   │   │   ├── [jobId]/
+│   │   │   │   ├── publish/
+│   │   │   │   │   └── route.ts      # Publish job
+│   │   │   │   ├── removeJobFromCollection/
+│   │   │   │   │   └── route.ts      # Remove from saved jobs
+│   │   │   │   ├── route.ts          # Job CRUD operations
+│   │   │   │   ├── savedJobToCollection/
+│   │   │   │   │   └── route.ts      # Save job to collection
+│   │   │   │   └── unpublish/
+│   │   │   │       └── route.ts      # Unpublish job
+│   │   │   └── route.ts              # Jobs API
+│   │   ├── resumes/
+│   │   │   └── route.ts              # Resume upload/management
+│   │   ├── thankyou/
+│   │   │   └── route.ts              # Thank you page API
+│   │   └── users/
+│   │       └── [userId]/
+│   │           ├── appliedJobs/
+│   │           │   └── route.ts      # User's applied jobs
+│   │           └── route.ts          # User management
+│   │
+│   ├── favicon.ico                   # App favicon
+│   ├── globals.css                   # Global styles
+│   └── layout.tsx                    # Root layout
+│
+├── components/                       # Reusable components
+│   ├── banner.tsx                    # Banner component
+│   ├── box.tsx                       # Box container component
+│   ├── editor.tsx                    # Rich text editor
+│   ├── icon-badge.tsx                # Icon badge component
+│   ├── preview.tsx                   # Content preview component
+│   ├── search-container.tsx          # Search container
+│   └── ui/                           # UI components
+│       ├── apply-model.tsx           # Job application modal
+│       ├── button.tsx                # Button component
+│       ├── card.tsx                  # Card component
+│       ├── checkbox.tsx              # Checkbox component
+│       ├── combo-box.tsx             # Combobox component
+│       ├── command.tsx               # Command component
+│       ├── data-table.tsx            # Data table component
+│       ├── dialog.tsx                # Dialog component
+│       ├── dropdown-menu.tsx         # Dropdown menu
+│       ├── form.tsx                  # Form component
+│       ├── input.tsx                 # Input component
+│       ├── label.tsx                 # Label component
+│       ├── list-item.tsx             # List item component
+│       ├── model.tsx                 # Modal component
+│       ├── popover.tsx               # Popover component
+│       ├── select.tsx                # Select component
+│       ├── separator.tsx             # Separator component
+│       ├── sheet.tsx                 # Sheet component
+│       ├── table.tsx                 # Table component
+│       └── textarea.tsx              # Textarea component
+│
+├── hooks/                            # Custom React hooks
+│   └── use-debounce.ts               # Debounce hook
+│
+├── lib/                              # Utility libraries
+│   ├── db.ts                         # Database connection
+│   ├── generated/                    # Prisma generated files
+│   │   └── prisma/                   # Prisma client
+│   ├── mail.ts                       # Email utilities
+│   └── utils.ts                      # General utilities
+│
+├── prisma/                           # Database schema
+│   └── schema.prisma                 # Prisma schema file
+│
+├── providers/                        # React context providers
+│   └── toast-provider.tsx            # Toast notifications provider
+│
+├── public/                           # Static assets
+│   ├── file.svg                      # File icon
+│   ├── globe.svg                     # Globe icon
+│   ├── img/
+│   │   └── logo.png                  # App logo
+│   ├── next.svg                      # Next.js logo
+│   ├── vercel.svg                    # Vercel logo
+│   └── window.svg                    # Window icon
+│
+├── scripts/                          # Utility scripts
+│   ├── aistudio.ts                   # AI Studio integration
+│   └── seeds.ts                      # Database seeding
+│
+├── components.json                   # shadcn/ui components config
+├── eslint.config.mjs                 # ESLint configuration
+├── middleware.ts                     # Next.js middleware
+├── next.config.mjs                   # Next.js configuration
+├── package.json                      # Project dependencies
+├── postcss.config.mjs                # PostCSS configuration
+├── tailwind.config.ts                # Tailwind CSS configuration
+└── tsconfig.json                     # TypeScript configuration
 ```
 
 🚀 Getting Started
