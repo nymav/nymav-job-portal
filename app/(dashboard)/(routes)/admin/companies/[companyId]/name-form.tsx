@@ -47,7 +47,7 @@ export const CompanyName = ({ initialData, companyId }: CompanyNameProps) => {
       toast.success("Company name updated successfully");
       toggleEditing();
       router.refresh();
-    } catch (error) {
+    } catch (_error) {
       toast.error("Something went wrong while updating the company name");
     }
   };

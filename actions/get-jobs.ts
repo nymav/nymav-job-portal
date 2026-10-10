@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
-import { Job } from "@/lib/generated/prisma";
+import { Job, Prisma } from "@/lib/generated/prisma";
 import { auth } from "@clerk/nextjs/server";
-import { subDays, startOfDay, endOfDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from "date-fns";
+import { subMonths, subDays, startOfDay, endOfDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from "date-fns";
 
 type GetJobsParams = {
   title?: string;
@@ -23,13 +23,14 @@ export const GetJobs = async ({
   createdAtFilter,
 }: GetJobsParams): Promise<Job[]> => {
   const { userId } = await auth();
+  if (savedJobs && !userId) return [];
 
   try {
-    const whereClause: Record<string, any> = {
+    const whereClause: Prisma.JobWhereInput = {
       isPublished: true,
     };
 
-    const andConditions: Record<string, any>[] = [];
+    const andConditions: Prisma.JobWhereInput[] = [];
 
     if (title) {
       andConditions.push({
@@ -81,8 +82,8 @@ export const GetJobs = async ({
           to = endOfWeek(subDays(now, 7), { weekStartsOn: 1 });
           break;
         case "lastMonth":
-          from = startOfMonth(subDays(now, 30));
-          to = endOfMonth(subDays(now, 30));
+          from = startOfMonth(subMonths(now, 1));
+          to = endOfMonth(subMonths(now, 1));
           break;
         default:
           break;
@@ -97,6 +98,8 @@ export const GetJobs = async ({
         });
       }
     }
+
+    if (savedJobs && userId) andConditions.push({ savedUsers: { has: userId } });
 
     if (andConditions.length > 0) {
       whereClause.AND = andConditions;

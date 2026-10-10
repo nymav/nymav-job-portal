@@ -85,6 +85,10 @@ model AppliedJob {
   jobId        String      @db.ObjectId
   userId       String
   appliedAt    DateTime    @default(now())
+  resumeId     String?     @db.ObjectId
+  resumeName   String?
+  resumeUrl    String?
+  contactEmail String?
 
   job          Job         @relation(fields: [jobId], references: [id])
   userProfile  UserProfile @relation(fields: [userId], references: [userId], onDelete: Cascade)

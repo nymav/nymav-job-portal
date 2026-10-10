@@ -3,15 +3,17 @@
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 
+type CategoryOption = { label: string; value: string };
+
 interface ListItemProps {
-  category: any;
-  onSelect: (category: any) => void;
+  category: CategoryOption;
+  onSelect: (category: CategoryOption) => void;
   isChecked: boolean;
 }
 
 export const ListItem = ({ category, onSelect, isChecked }: ListItemProps) => {
   return (
-    <div
+    <button type="button" aria-pressed={isChecked}
       className={cn(
         "flex items-center px-3 py-1 cursor-pointer rounded-md transition-colors select-none",
         "text-purple-300 hover:bg-purple-700/30 hover:text-purple-100",
@@ -26,6 +28,6 @@ export const ListItem = ({ category, onSelect, isChecked }: ListItemProps) => {
         )}
       />
       <p className="w-full truncate text-sm whitespace-nowrap">{category.label}</p>
-    </div>
+    </button>
   );
 };

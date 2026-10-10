@@ -1,11 +1,7 @@
 import { PrismaClient } from "../lib/generated/prisma";
 
 const database = new PrismaClient();
-
-const main = async () => {
-    try{
-        await database.category.createMany({
-            data:[
+const categories = [
                 {name: "Software Development"},
                 {name: "Data Science"},
                 {name: "Machine Learning"},
@@ -42,13 +38,16 @@ const main = async () => {
                 {name: "Data Compliance"},
                 {name: "Data Strategy"},
                 {name: "Data Operations"},
-            ],
-            
-        });
-        console.log("Categories seeded successfully");
-    }catch (error) {
-        console.error(`Error seeding database: ${error}`);
-    }
+            ];
+
+async function main() {
+  for (const {name} of categories) {
+    await database.category.upsert({where:{name},create:{name},update:{}});
+  }
+  console.log("Categories seeded successfully");
 }
 
-main();
+main().catch(() => {
+  console.error("Category seeding failed. Check your development database configuration.");
+  process.exitCode = 1;
+}).finally(() => database.$disconnect());

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import Image from "next/image";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -49,11 +50,7 @@ export const ResumeForm = ({ initialData, userId }: ResumeFormProps) => {
     name: "resumeUrl",
   });
 
-  const [previewUrl, setPreviewUrl] = useState(resumeUrl || "");
-
-  useEffect(() => {
-    setPreviewUrl(resumeUrl || "");
-  }, [resumeUrl]);
+  const previewUrl = resumeUrl || "";
 
   const { isSubmitting, isValid } = form.formState;
 
@@ -79,7 +76,7 @@ export const ResumeForm = ({ initialData, userId }: ResumeFormProps) => {
       toast.success("Resume updated successfully");
       toggleEditing();
       router.refresh();
-    } catch (error) {
+    } catch (_error) {
       toast.error("Failed to update resume");
     }
   };
@@ -158,14 +155,16 @@ export const ResumeForm = ({ initialData, userId }: ResumeFormProps) => {
                 {isPdf(previewUrl) ? (
                   <iframe
                     src={previewUrl}
+                    sandbox=""
+                    referrerPolicy="no-referrer"
                     title="Resume PDF Preview"
                     className="w-full h-64 rounded border border-gray-600/30"
                   />
                 ) : isImage(previewUrl) ? (
-                  <img
+                  <Image unoptimized width={640} height={480}
                     src={previewUrl}
                     alt="Resume Preview"
-                    className="max-h-64 mx-auto rounded border border-gray-600/30"
+                    className="max-h-64 w-auto object-contain mx-auto rounded border border-gray-600/30"
                   />
                 ) : (
                   <div className="text-center py-4">

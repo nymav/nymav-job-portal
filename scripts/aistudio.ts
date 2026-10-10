@@ -1,53 +1,23 @@
-const {
-    GoogleGenerativeAI,
-    HarmCategory,
-    HarmBlockThreshold,
-  } = require("@google/generative-ai");
-  
-  // const apiKey = process.env.GEMINI_API_KEY;
-  const genAI = new GoogleGenerativeAI("YOUR-GOOGLE-API-KEY");
-  
-  const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-flash",
+"use server";
+
+import { auth } from "@clerk/nextjs/server";
+import { z } from "zod";
+
+export default async function getGenerativeAIResponse(prompt: string) {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Sign in to generate content.");
+  const input = z.string().trim().min(1).max(10000).parse(prompt);
+  const apiKey = process.env.GEMINI_API_KEY;
+  const model = process.env.GEMINI_MODEL;
+  if (!apiKey || !model || !/^[\w.-]+$/.test(model)) throw new Error("AI generation is not configured. Set GEMINI_API_KEY and GEMINI_MODEL on the server.");
+  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+    method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
+    body: JSON.stringify({ contents: [{ parts: [{ text: input }] }], generationConfig: { maxOutputTokens: 2048, temperature: 0.7 } }),
+    signal: AbortSignal.timeout(30000),
   });
-  
-  const generationConfig = {
-    temperature: 1,
-    topP: 0.95,
-    topK: 64,
-    maxOutputTokens: 8192,
-    responseMimeType: "text/plain",
-  };
-  
-  async function getGenerativeAIResponse(prompt: string) {
-    const safetySettings = [
-      {
-        category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-      },
-      {
-        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-      },
-      {
-        category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-      },
-      {
-        category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-      },
-    ];
-  
-    const chatSession = model.startChat({
-      generationConfig,
-      safetySettings,
-      history: [],
-    });
-  
-    const result = await chatSession.sendMessage(prompt);
-    console.log(result.response.text());
-    return result.response.text().trim().replace(/```/g, "");
-  }
-  
-  export default getGenerativeAIResponse;
+  if (!response.ok) throw new Error("The AI provider could not complete the request. Try again later.");
+  const data = await response.json();
+  const result = data.candidates?.[0]?.content?.parts?.map((part: {text?: string}) => part.text || "").join("").trim();
+  if (!result) throw new Error("The AI provider returned no text.");
+  return result;
+}

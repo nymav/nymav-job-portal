@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form";
+
 import { Input } from "@/components/ui/input";
 import { Pencil, Lightbulb, Loader2, X } from "lucide-react";
 import getGenerativeAIResponse from "@/scripts/aistudio";
@@ -36,7 +36,7 @@ export const TagsForm = ({ initialData, jobId }: TagsFormProps) => {
     defaultValues: { tags: jobTags },
   });
 
-  const { isSubmitting, isValid } = form.formState;
+  const { isSubmitting } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {

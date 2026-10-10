@@ -16,7 +16,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       />
 
       {/* Navbar (Top) */}
-      <header className="fixed top-0 inset-x-0 z-50 h-16 bg-black/95 backdrop-blur-xl border-b border-gray-800/50 md:pl-60">
+      <header className="fixed top-0 inset-x-0 z-50 h-16 bg-black/95 backdrop-blur-xl border-b border-gray-800/50 md:left-60">
         <Navbar />
       </header>
 
@@ -26,7 +26,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       </aside>
 
       {/* Main Content */}
-      <main className="pt-16 md:pl-60 px-4 pb-10 min-h-[calc(100vh-4rem)] overflow-x-hidden">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-white focus:text-black focus:p-3">Skip to content</a>
+      <main id="main-content" className="pt-16 md:pl-60 px-4 pb-10 min-h-[calc(100vh-4rem)] overflow-x-hidden">
         {children}
       </main>
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useForm } from "react-hook-form";
@@ -26,7 +26,6 @@ const formSchema = z.object({
 export const NameForm = ({ initialData, userId }: NameFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [displayName, setDisplayName] = useState(initialData?.fullName || "");
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

@@ -15,41 +15,43 @@ interface Applicant {
 }
 
 interface PageProps {
-  params: { jobId: string };
+  params: Promise<{ jobId: string }>;
 }
 
-const JobApplicantsPage = async ({ params }: any) => {
+const JobApplicantsPage = async ({ params }: PageProps) => {
+  const { jobId } = await params;
   const { userId } = await auth();
 
   if (!userId) redirect("/sign-in");
 
   const job = await db.job.findUnique({
-    where: { id: params.jobId, userId },
+    where: { id: jobId, userId },
   });
 
   if (!job) redirect("/admin/jobs");
 
   const profiles = await db.userProfile.findMany({
+    where: { appliedJobs: { some: { jobId } } },
     include: {
       resumes: { orderBy: { createdAt: "desc" } },
       appliedJobs: true, // make sure this is included in your Prisma schema
     },
   });
 
-  const filteredProfiles = profiles.filter((profile: any) =>
-    profile.appliedJobs?.some((aj: any) => aj.jobId === params.jobId)
+  const filteredProfiles = profiles.filter((profile) =>
+    profile.appliedJobs?.some((aj) => aj.jobId === jobId)
   );
 
-  const applicants: Applicant[] = filteredProfiles.map((profile: any) => {
-    const appliedJob = profile.appliedJobs.find((aj: any) => aj.jobId === params.jobId);
+  const applicants: Applicant[] = filteredProfiles.map((profile) => {
+    const appliedJob = profile.appliedJobs.find((aj) => aj.jobId === jobId);
     const latestResume = profile.resumes[0];
     return {
       id: profile.userId,
       fullName: profile.fullName ?? "",
-      email: profile.email ?? "",
+      email: appliedJob?.contactEmail ?? profile.email ?? "",
       contact: profile.contact ?? "",
-      resume: latestResume?.url ?? "",
-      resumeName: latestResume?.name ?? "Untitled",
+      resume: appliedJob?.resumeUrl ?? latestResume?.url ?? "",
+      resumeName: appliedJob?.resumeName ?? latestResume?.name ?? "Untitled",
       appliedAt: appliedJob?.appliedAt?.toISOString() ?? "",
     };
   });

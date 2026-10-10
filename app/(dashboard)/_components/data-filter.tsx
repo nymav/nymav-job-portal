@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/select";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import queryString from "query-string";
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export const DateFilter = () => {
@@ -24,10 +23,7 @@ export const DateFilter = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return null;
 
   const onChange = (value: string) => {
     const currentQuery = Object.fromEntries(searchParams.entries());

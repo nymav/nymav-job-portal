@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import Link from "next/link";
+
+import React, { useState } from "react";
 import type { Company, Job, Resumes, UserProfile, Category } from "@/lib/generated/prisma";
 import { ApplyModel } from "@/components/ui/apply-model";
 import toast from "react-hot-toast";
@@ -70,10 +72,10 @@ export const JobDetailsPageContent = ({
       await axios.post("/api/thankyou", {
         fullName: userProfile?.fullName,
         email: response.data.email,
-      });
+      }).catch(() => undefined);
 
       toast.success("Application submitted successfully!");
-    } catch (error) {
+    } catch (_error) {
       toast.error("Something went wrong while applying.");
     } finally {
       setApplyModalOpen(false);
@@ -123,28 +125,28 @@ export const JobDetailsPageContent = ({
           {job.shiftTiming && (
             <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 rounded-xl p-4 text-center">
               <BriefcaseBusiness className="w-6 h-6 mx-auto mb-2 text-gray-400" />
-              <div className="text-sm text-gray-500">Shift</div>
+              <div className="text-sm text-gray-400">Shift</div>
               <div className="text-white font-medium">{job.shiftTiming}</div>
             </div>
           )}
           {job.workMode && (
             <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 rounded-xl p-4 text-center">
               <MapPin className="w-6 h-6 mx-auto mb-2 text-gray-400" />
-              <div className="text-sm text-gray-500">Work Mode</div>
+              <div className="text-sm text-gray-400">Work Mode</div>
               <div className="text-white font-medium">{job.workMode}</div>
             </div>
           )}
           {job.hourlyRate && (
             <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 rounded-xl p-4 text-center">
               <Currency className="w-6 h-6 mx-auto mb-2 text-gray-400" />
-              <div className="text-sm text-gray-500">Rate</div>
+              <div className="text-sm text-gray-400">Rate</div>
               <div className="text-white font-medium">${job.hourlyRate}/hr</div>
             </div>
           )}
           {job.yearsOfExperience && (
             <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 rounded-xl p-4 text-center">
               <Network className="w-6 h-6 mx-auto mb-2 text-gray-400" />
-              <div className="text-sm text-gray-500">Experience</div>
+              <div className="text-sm text-gray-400">Experience</div>
               <div className="text-white font-medium">{job.yearsOfExperience}</div>
             </div>
           )}
@@ -192,9 +194,9 @@ export const JobDetailsPageContent = ({
           ) : (
             <div className="text-center">
               <p className="text-gray-400 mb-4 text-lg">Ready to take your career to the next level?</p>
-              <button className="px-12 py-4 bg-white text-black rounded-xl font-bold text-lg hover:bg-gray-100 hover:scale-105 transition-all duration-300 shadow-lg">
+              <Link href="/sign-in" className="inline-block px-12 py-4 bg-white text-black rounded-xl font-bold text-lg hover:bg-gray-100 hover:scale-105 transition-all duration-300 shadow-lg">
                 Sign In to Apply
-              </button>
+              </Link>
             </div>
           )}
         </div>

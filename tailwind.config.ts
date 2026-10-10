@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import animatePlugin from "tailwindcss-animate";
 import scrollbarPlugin from "tailwind-scrollbar";
 
 const config: Config = {
@@ -51,7 +52,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar")
+  plugins: [animatePlugin, scrollbarPlugin
   ],
   darkMode: "class",
 };

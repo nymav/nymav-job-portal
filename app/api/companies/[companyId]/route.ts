@@ -1,3 +1,4 @@
+import { companyPatch, objectId } from "@/lib/validation";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
@@ -12,11 +13,13 @@ export async function PATCH(req: NextRequest) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    if (!companyId) {
+    if (!companyId || !objectId.safeParse(companyId).success) {
       return new NextResponse("Company ID is required", { status: 400 });
     }
 
-    const updatedValues = await req.json();
+    const parsed = companyPatch.safeParse(await req.json());
+    if (!parsed.success) return NextResponse.json({ error: "Invalid update", issues: parsed.error.flatten() }, { status: 400 });
+    const updatedValues = parsed.data;
 
     const company = await db.company.update({
       where: {

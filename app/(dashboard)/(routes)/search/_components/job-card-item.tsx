@@ -26,9 +26,10 @@ import { useRouter } from "next/navigation";
 interface JobCardItemProps {
   job: Job & { company: Company | null; category?: Category | null; savedUsers?: string[] };
   userId: string | null;
+  preview?: boolean;
 }
 
-export const JobCardItem = ({ job, userId }: JobCardItemProps) => {
+export const JobCardItem = ({ job, userId, preview = false }: JobCardItemProps) => {
   const company = job.company;
   const [isBookmarkedLoading, setIsBookmarkedLoading] = useState(false);
   const isSavedByUser = Boolean(userId && job.savedUsers?.includes(userId));
@@ -36,6 +37,7 @@ export const JobCardItem = ({ job, userId }: JobCardItemProps) => {
   const router = useRouter();
 
   const onClickSaveJob = async () => {
+    if (preview) return;
     if (!userId) {
       toast.error("Please sign in to save jobs.");
       return;
@@ -51,7 +53,7 @@ export const JobCardItem = ({ job, userId }: JobCardItemProps) => {
         toast.success("Job saved for later.");
       }
       router.refresh();
-    } catch (error) {
+    } catch (_error) {
       toast.error("Something went wrong while saving the job.");
     } finally {
       setIsBookmarkedLoading(false);
@@ -77,7 +79,8 @@ export const JobCardItem = ({ job, userId }: JobCardItemProps) => {
           size="icon"
           className="text-gray-400 hover:text-white hover:bg-gray-700/50 transition-all duration-200"
           onClick={onClickSaveJob}
-          aria-label="Toggle Bookmark"
+          aria-label={isSavedByUser ? "Remove saved job" : "Save job"}
+          disabled={preview || isBookmarkedLoading}
         >
           {isBookmarkedLoading ? (
             <Loader2 className="w-4 h-4 animate-spin" />
@@ -95,7 +98,7 @@ export const JobCardItem = ({ job, userId }: JobCardItemProps) => {
           </h3>
           {company && (
             <Link
-              href={`/company/${company.id}`}
+              href={preview ? `/preview/${job.id}` : `/company/${company.id}`}
               className="text-sm text-gray-400 hover:text-white hover:underline transition-colors inline-flex items-center"
             >
               <BriefcaseBusiness className="w-4 h-4 mr-1" />
@@ -167,26 +170,24 @@ export const JobCardItem = ({ job, userId }: JobCardItemProps) => {
 
       {/* Actions */}
       <div className="flex flex-col gap-3 mt-auto">
-        <Link href={`/search/${job.id}`} className="w-full">
-          <Button
+        <Button asChild
             className="w-full bg-gray-800/80 hover:bg-gray-700/90 text-white border border-gray-600/40 hover:border-gray-500/60 hover:scale-105 transition-all duration-200 shadow-lg"
             variant="outline"
-          >
+          ><Link href={`${preview ? "/preview" : "/search"}/${job.id}`} className="w-full">
             View Details
-          </Button>
-        </Link>
+          </Link></Button>
         <Button
           className="w-full text-black bg-white hover:bg-gray-100 hover:scale-105 transition-all duration-200 shadow-lg font-semibold"
           variant="default"
           onClick={onClickSaveJob}
-          disabled={isBookmarkedLoading}
+          disabled={preview || isBookmarkedLoading}
         >
           {isBookmarkedLoading ? (
             <Loader2 className="w-4 h-4 animate-spin mr-2" />
           ) : (
             <SavedIcon className="w-4 h-4 mr-2" />
           )}
-          {isSavedByUser ? "Saved" : "Save Job"}
+          {preview ? "Preview only" : isSavedByUser ? "Saved" : "Save Job"}
         </Button>
       </div>
     </motion.div>

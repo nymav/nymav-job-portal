@@ -1,3 +1,4 @@
+import { jobPatch, objectId } from "@/lib/validation";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
@@ -12,12 +13,18 @@ export const PATCH = async (req: NextRequest) => {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    if (!jobId) {
+    if (!jobId || !objectId.safeParse(jobId).success) {
       return new NextResponse("Id is missing", { status: 400 });
     }
 
-    const updatedValues = await req.json();
+    const parsed = jobPatch.safeParse(await req.json());
+    if (!parsed.success) return NextResponse.json({ error: "Invalid update", issues: parsed.error.flatten() }, { status: 400 });
+    const updatedValues = parsed.data;
 
+    if (updatedValues.companyId) {
+      const company = await db.company.findFirst({ where: { id: updatedValues.companyId, userId } });
+      if (!company) return new NextResponse("Company not found", { status: 404 });
+    }
     const job = await db.job.update({
       where: {
         id: jobId,
@@ -45,7 +52,7 @@ export const DELETE = async (req: NextRequest) => {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    if (!jobId) {
+    if (!jobId || !objectId.safeParse(jobId).success) {
       return new NextResponse("Id is missing", { status: 400 });
     }
 

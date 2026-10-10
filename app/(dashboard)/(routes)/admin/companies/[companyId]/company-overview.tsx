@@ -50,7 +50,7 @@ export const CompanyOverviewForm = ({ initialData, companyId }: CompanyOverviewF
       toast.success("Company overview updated successfully");
       toggleEditing();
       router.refresh();
-    } catch (error) {
+    } catch (_error) {
       toast.error("Something went wrong while updating the overview");
     }
   };
@@ -72,7 +72,7 @@ export const CompanyOverviewForm = ({ initialData, companyId }: CompanyOverviewF
       setAiValue(cleaned);
       form.setValue("overview", cleaned);
       form.trigger("overview");
-    } catch (error) {
+    } catch (_error) {
       toast.error("Failed to generate description");
     } finally {
       setIsPrompting(false);

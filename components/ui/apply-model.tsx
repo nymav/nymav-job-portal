@@ -1,7 +1,7 @@
 "use client";
 
 import type { UserProfile, Resumes } from "@/lib/generated/prisma";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Model } from "./model";
 import Box from "../box";
 import { Mail, Phone, FileText } from "lucide-react";
@@ -21,33 +21,17 @@ export const ApplyModel = ({
   loading,
   userProfile,
 }: ApplyProps) => {
-  const [isMounted, setIsMounted] = useState(false);
   const [selectedResumeId, setSelectedResumeId] = useState<string>(
     userProfile.resumes.length > 0 ? userProfile.resumes[0].id : ""
   );
   const [contactEmail, setContactEmail] = useState<string>(userProfile.email ?? "");
   const [contactPhone, setContactPhone] = useState<string>(userProfile.contact ?? "");
 
-  useEffect(() => setIsMounted(true), []);
-
-  useEffect(() => {
-    if (isOpen) {
-      setSelectedResumeId(userProfile.resumes.length > 0 ? userProfile.resumes[0].id : "");
-      setContactEmail(userProfile.email ?? "");
-      setContactPhone(userProfile.contact ?? "");
-    }
-  }, [isOpen, userProfile]);
-
-  if (!isMounted) return null;
-
   const handleConfirmClick = () => {
     if (!selectedResumeId) return alert("No resume found.");
     if (!contactEmail) return alert("Please enter your contact email.");
     onConfirmAction(selectedResumeId, contactEmail);
   };
-
-  const resumeName =
-    userProfile.resumes.find((r) => r.id === selectedResumeId)?.name ?? "No Resume Found";
 
   return (
     <Model
@@ -64,6 +48,7 @@ export const ApplyModel = ({
           <div className="flex items-center gap-2">
             <Mail className="w-4 h-4 text-purple-300" />
             <input
+              aria-label="Contact email"
               type="email"
               value={contactEmail}
               onChange={(e) => setContactEmail(e.target.value)}
@@ -75,6 +60,7 @@ export const ApplyModel = ({
           <div className="flex items-center gap-2">
             <Phone className="w-4 h-4 text-purple-300" />
             <input
+              aria-label="Contact phone"
               type="tel"
               value={contactPhone}
               onChange={(e) => setContactPhone(e.target.value)}
@@ -92,7 +78,7 @@ export const ApplyModel = ({
           ) : (
             <div className="flex items-center gap-2 bg-black/40 px-4 py-3 rounded-lg border border-purple-800">
               <FileText className="w-5 h-5 text-purple-400" />
-              <span className="text-purple-200 font-medium">{resumeName}</span>
+              <select aria-label="Resume for this application" value={selectedResumeId} onChange={(event) => setSelectedResumeId(event.target.value)} className="w-full bg-gray-950 text-purple-200 rounded p-2">{userProfile.resumes.map((resume) => <option key={resume.id} value={resume.id}>{resume.name}</option>)}</select>
             </div>
           )}
         </div>

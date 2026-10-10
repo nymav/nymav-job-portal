@@ -5,14 +5,7 @@ import { ChevronsUpDown, Search } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
+import { Command, CommandEmpty, CommandGroup, CommandList } from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
@@ -42,19 +35,7 @@ export const Combobox = ({
 }: ComboboxProps) => {
   const [open, setOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
-  const [filtered, setFiltered] = React.useState<Option[]>(options);
-
-  React.useEffect(() => {
-    if (searchTerm === "") {
-      setFiltered(options);
-    } else {
-      setFiltered(
-        options.filter((item) =>
-          item.label.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      );
-    }
-  }, [searchTerm, options]);
+  const filtered = options.filter((item) => item.label.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const handleSearchTerm = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);

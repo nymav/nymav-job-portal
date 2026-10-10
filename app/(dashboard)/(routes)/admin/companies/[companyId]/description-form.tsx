@@ -46,7 +46,7 @@ export const CompanyDescriptionForm = ({
       toast.success("Company description updated successfully");
       toggleEditing();
       router.refresh();
-    } catch (error) {
+    } catch (_error) {
       toast.error("Something went wrong while updating the company description");
     }
   };

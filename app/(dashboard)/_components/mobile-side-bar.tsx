@@ -13,7 +13,7 @@ import { Sidebar } from "./sidebar";
 export const MobileSideBar = () => {
   return (
     <Sheet>
-      <SheetTrigger className="md:hidden p-2 rounded-lg hover:bg-gray-800/60 text-white transition-colors flex items-center justify-center">
+      <SheetTrigger aria-label="Open navigation menu" className="md:hidden p-2 rounded-lg hover:bg-gray-800/60 text-white transition-colors flex items-center justify-center">
         <Menu size={22} />
       </SheetTrigger>
 

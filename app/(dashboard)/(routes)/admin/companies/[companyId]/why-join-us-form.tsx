@@ -15,7 +15,7 @@ import axios from "axios";
 import { Pencil, Lightbulb, Loader2, Copy } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import z from "zod";
 import getGenerativeAIResponse from "@/scripts/aistudio";

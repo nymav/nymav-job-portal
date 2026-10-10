@@ -4,14 +4,12 @@ import { Bookmark, Compass, Home, List, User } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { SidebarRoutesItem } from "./side-bar-route-item";
 import Box from "@/components/box";
-import { useEffect, useState } from "react";
 import { SearchContainer } from "@/components/search-container";
 import { DateFilter } from "./data-filter";
 
 const adminRoutes = [
   { icon: List, label: "Jobs", href: "/admin/jobs" },
   { icon: List, label: "Companies", href: "/admin/companies" },
-  { icon: Compass, label: "Analytics", href: "/admin/analytics" },
 ];
 
 const guestRoutes = [
@@ -25,9 +23,7 @@ export const SidebarRoutes = () => {
   const pathname = usePathname();
   const isAdminPage = pathname?.startsWith("/admin");
   const isSearchPage = pathname?.startsWith("/search");
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => setMounted(true), []);
   const routes = isAdminPage ? adminRoutes : guestRoutes;
 
   return (
@@ -41,7 +37,7 @@ export const SidebarRoutes = () => {
         />
       ))}
 
-      {mounted && isSearchPage && (
+      {isSearchPage && (
         <Box className="mt-6 pt-4 border-t border-gray-700/50">
           <div className="flex flex-col gap-4">
             <SearchContainer />

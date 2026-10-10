@@ -41,10 +41,6 @@ const CompanyEditPage = async ({ params }: CompanyPageProps) => {
     if (!company) return redirect("/admin/companies");
   }
 
-  const categories = await db.category.findMany({
-    orderBy: { name: "asc" },
-  });
-
   const requiredFields = company
     ? [
         company.name,
@@ -63,7 +59,6 @@ const CompanyEditPage = async ({ params }: CompanyPageProps) => {
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
   const completionText = company ? `(${completedFields}/${totalFields})` : "(0/0)";
-  const isComplete = requiredFields.every(Boolean);
 
   return (
     <div className="p-6 bg-black/30 rounded-lg text-purple-300 min-h-screen">

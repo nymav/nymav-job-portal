@@ -6,28 +6,29 @@ export const POST = async (req: Request) => {
     try {
 
         const {userId} =  await auth();
-        
+
         const{name} = await req.json();
 
         if(!userId){
             return new NextResponse("Unauthorized", { status: 401 });
         }
 
-        if(!name){
+        if(typeof name !== "string" || !name.trim() || name.length > 200){
             return new NextResponse("name is required", { status: 400 });
         }
 
         const company = await db.company.create({
             data: {
                 userId,
-                name,
+                name: name.trim(),
+                followers: [],
             }
         })
 
         return NextResponse.json(company);
 
-    } catch (error){ 
-        console.log('[COMPANY_POST] : ${error}');
+    } catch (_error){
+        console.error('[COMPANY_POST]');
         return new NextResponse("Internal Server Error", { status: 500 });
 
     }

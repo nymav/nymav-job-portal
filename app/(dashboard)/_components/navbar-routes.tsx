@@ -19,7 +19,7 @@ export const NavbarRoutes = () => {
     <div className="flex items-center gap-x-4">
       {/* Search bar only on search page and md+ screens */}
       {isSearchPage && (
-        <div className="hidden flex flex-1 px-2 pr-8 items-center">
+        <div className="hidden">
           <SearchContainer />
         </div>
       )}
@@ -27,33 +27,29 @@ export const NavbarRoutes = () => {
       {/* Right side buttons */}
       <div className="flex items-center gap-x-3 ml-auto">
         {(isAdminPage || isPlayerPage) ? (
-          <Link href="/">
-            <Button
+          <Button asChild
               variant="outline"
               size="sm"
               className={cn(
                 "text-white border-gray-600/40 bg-gray-900/60 hover:bg-gray-800/80 hover:text-white hover:border-gray-500 transition-all duration-200",
                 "flex items-center gap-1 rounded-lg font-medium"
               )}
-            >
+            ><Link href="/">
               <LogOut className="w-4 h-4" />
               <span className="hidden sm:inline">Exit</span>
-            </Button>
-          </Link>
+            </Link></Button>
         ) : (
-          <Link href="/admin/jobs">
-            <Button
+          <Button asChild
               variant="outline"
               size="sm"
               className="text-white border-gray-600/40 bg-gray-900/60 hover:bg-gray-800/80 hover:text-white hover:border-gray-500 transition-all duration-200 rounded-lg font-medium"
-            >
-              Hub
-            </Button>
-          </Link>
+            ><Link href="/admin/jobs">
+              Hiring workspace
+            </Link></Button>
         )}
 
         {/* Clerk user avatar */}
-        <UserButton afterSignOutUrl="/" />
+        {process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY && <UserButton afterSignOutUrl="/" />}
       </div>
     </div>
   );

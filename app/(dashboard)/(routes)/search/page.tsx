@@ -123,7 +123,7 @@ const SearchPage = async ({
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">No Jobs Found</h3>
               <p className="text-gray-400 text-lg max-w-md mx-auto mb-6">
-                We couldn't find any jobs matching your current search criteria. 
+                We could not find any jobs matching your current search criteria.
                 Try adjusting your filters or search terms.
               </p>
               <div className="space-y-2 text-sm text-gray-500">

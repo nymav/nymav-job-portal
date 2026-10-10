@@ -31,7 +31,7 @@ const JobDetailsPage = async ({
     },
   });
 
-  if (!job) {
+  if (!job || (!job.isPublished && job.userId !== userId)) {
     redirect("/search");
   }
 

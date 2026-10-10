@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+
 import { ColumnDef } from "@tanstack/react-table";
 import {
   DropdownMenu,
@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Eye, MoreHorizontal, Pencil, ArrowUpDown } from "lucide-react";
+import { MoreHorizontal, Pencil, ArrowUpDown } from "lucide-react";
 import Link from "next/link";
 
 export type CompanyColumns = {

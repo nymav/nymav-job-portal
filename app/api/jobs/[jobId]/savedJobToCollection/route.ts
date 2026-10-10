@@ -12,13 +12,12 @@ export const PATCH = async (req: NextRequest) => {
       return new NextResponse("Unauthorized or Missing Job ID", { status: 401 });
     }
 
+    const existing = await db.job.findFirst({ where: { id: jobId, isPublished: true } });
+    if (!existing) return new NextResponse("Job not found", { status: 404 });
+    if (existing.savedUsers.includes(userId)) return NextResponse.json(existing);
     const job = await db.job.update({
       where: { id: jobId },
-      data: {
-        savedUsers: {
-          push: userId,
-        },
-      },
+      data: { savedUsers: { push: userId } },
     });
 
     return NextResponse.json(job);

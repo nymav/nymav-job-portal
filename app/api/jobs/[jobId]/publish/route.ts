@@ -27,6 +27,10 @@ export const PATCH = async (req: NextRequest) => {
       return new NextResponse("Job not found", { status: 404 });
     }
 
+    if (!job.title.trim() || !job.description?.trim() || !job.categoryId) {
+      return new NextResponse("Add a title, description, and category before publishing", { status: 400 });
+    }
+
     const publishJob = await db.job.update({
       where: {
         id: jobId,
