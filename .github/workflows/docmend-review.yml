@@ -1,0 +1,41 @@
+name: DocMend documentation review
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      base:
+        description: Base commit SHA to compare
+        required: true
+permissions:
+  contents: read
+concurrency:
+  group: docmend-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  documentation-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Analyze documentation changes (offline, report only)
+        uses: nymav/docmend@f96a988fa1affdcd049b0d125225e0229cbc26d3
+        with:
+          base: ${{ github.event.pull_request.base.sha || inputs.base }}
+          head: ${{ github.event.pull_request.head.sha || github.sha }}
+          output: docmend-review-report
+          fail-on: never
+          llm: 'false'
+          semantic: 'false'
+          publish: 'false'
+      - name: Save documentation review
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: docmend-review-${{ github.run_id }}
+          path: docmend-review-report/
+          if-no-files-found: warn
+          retention-days: 7
