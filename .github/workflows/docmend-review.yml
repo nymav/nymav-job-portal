@@ -31,6 +31,12 @@ jobs:
           llm: 'false'
           semantic: 'false'
           publish: 'false'
+      - name: Make container reports readable by artifact uploader
+        if: always()
+        run: |
+          if [ -d docmend-review-report ]; then
+            sudo chown -R --no-dereference "$(id -u):$(id -g)" docmend-review-report
+          fi
       - name: Save documentation review
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
