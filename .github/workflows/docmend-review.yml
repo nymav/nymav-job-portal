@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Analyze documentation changes (offline, report only)
-        uses: nymav/docmend@f96a988fa1affdcd049b0d125225e0229cbc26d3
+        uses: nymav/docmend@ba1a65d6ce3e705f62091d7f8203dfc2e9232079
         with:
           base: ${{ github.event.pull_request.base.sha || inputs.base }}
           head: ${{ github.event.pull_request.head.sha || github.sha }}
